@@ -9,6 +9,7 @@
 #define puzzleSolver_hpp
 
 #include <stdio.h>
+#include <iostream>
 #include <vector>
 #include <queue>
 #include <list>
@@ -23,10 +24,12 @@ struct SquareTile {
     SquareTile* childNode2;
     SquareTile* childNode3;
     SquareTile* childNode4;
-    //heuristic val for each expansion
+    // heuristic val for each expansion
     int heuristicVal;
     // movement cost for each expansion
     int movementCost;
+    // vector of int vectors that includes a puzzle states
+    vector<vector<int>> eightPuzzle;
 };
 
 class PuzzleSolver {
@@ -48,7 +51,16 @@ class PuzzleSolver {
 				// This is a list containg the final solution path from initial state to goal state
 				list<SquareTile*> solutionPath;
 		public:
+        // calculate the heuristic value depending on selected algorithm
 				int heuristicVal(vector<vector<int>>);
+        // make root node and set up intial puzzle
+        void makeTreeRoot(int);
+        // function to make a default puzzle
+        vector<vector<int>> makeDefaultPuzzle();
+        // function to make a custom puzzle
+        vector<vector<int>> makeCustomPuzzle();
+
+
 
 				/* More Functions to come => Still need the following
 				 * USe the selected algorithm

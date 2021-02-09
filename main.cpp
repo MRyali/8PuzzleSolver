@@ -14,14 +14,18 @@ using namespace std;
 int main(int argc, const char * argv[]) {
 
     int puzzleType = 0; //input for custom puzzle or default
-    int algorithmNum = 0; //input for desired algorithm 
+    int algorithmNum = 0; //input for desired algorithm
 
+    PuzzleSolver t1;
 
     cout << "This is Mayur Ryali's (862076991) solver for the 8 puzzle." << endl << endl;
 
     cout << "Choose if ypu want to use a default puzzle or your own (1 or 2): " << endl;
     cin >> puzzleType;
     cout << endl;
+
+    // make initial puzzle
+    t1.makeTreeRoot(puzzleType);
 
     cout << "Choose one of the following algorithms (1-3): " << endl;
     cout << "1) Uniform Cost Search" << endl;
