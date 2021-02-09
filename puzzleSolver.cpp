@@ -8,37 +8,37 @@
 #include "puzzleSolver.hpp"
 
 // Val Calculation algorithm: https://www.geeksforgeeks.org/a-search-algorithm/
-int heuristicVal (vector<vector<int>> puzzle) {
+int PuzzleSolver::heuristicVal (vector<vector<int>> puzzle) {
     int heuristicVal = 0;
-    
+
     vector<vector<int>> goalPuzzle;
-    
+
     /*If you have an array then sizeof(array) returns the number of bytes the array
      * occupies.Since each element can take more than 1 byte of space, you have to
      * divide the result with the size of one element (sizeof(array[0])). This
      * gives you number of elements in the array
      */
-    
+
     // vectors for each row of the 2D puzzle
     vector<int> v1, v2, v3;
-    
+
     v1.push_back(1);
     v1.push_back(2);
     v1.push_back(3);
-    
+
     v2.push_back(4);
     v2.push_back(5);
     v2.push_back(6);
-    
+
     v3.push_back(7);
     v3.push_back(8);
     v3.push_back(0);
-    
+
     // populate the goal puzzle
     goalPuzzle.push_back(v1);
     goalPuzzle.push_back(v2);
     goalPuzzle.push_back(v3);
-    
+
     // Uniform Cost Search (BFS) where heuristic is zero
     if (algorithmNum == 1) {
         heuristicVal = 0;
