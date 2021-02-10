@@ -13,6 +13,7 @@ ProblemSolver::ProblemSolver() {
 }
 
 // makes the root node and initial tree for eventual solutionPath
+// use of priority queue: https://www.geeksforgeeks.org/priority-queue-in-cpp-stl/
 void PuzzleSolver::makeTreeRoot (int a) {
     // create a SquareTile object
     SquareTile* squareT = new SquareTile;
@@ -25,14 +26,27 @@ void PuzzleSolver::makeTreeRoot (int a) {
     // set all values to zero to initialize
     squareT->heuristicVal = 0;
     squareT->movementCost = 0;
+    //goal state is initalized to false since we are not at goal state yet
+    isGoal = false;
+    // total nodes expanded and max nodes in queue are both zero since we havent expanded yet
+    totalNodes = 0;
+    maxNodes = 0;
 
     if (a == 1) { // User chose to use deafult 8 puzzle
         squareT->eightPuzzle = makeDefaultPuzzle();
         root = squareT;
+        // push the root node into our priority queue
+        que.push(root);
+        // store the puzzle to compare for repeats later
+        repeatStates.push_back(root->eightPuzzle);
     }
     else if (a == 2) { // User chose to use custom 8 puzzle
         squareT->eightPuzzle = makeCustomPuzzle();
         root = squareT;
+        // push the root node into our priority queue
+        que.push(root);
+        // store the puzzle to compare for repeats later
+        repeatStates.push_back(root->eightPuzzle);
     }
     else { // invalid choice
         cout << "Invalid entry. Program Exited." << endl;
@@ -192,7 +206,8 @@ void PuzzleSolver::boardMoves(vector<vector<int>> eightPuzzle) {
     }
 }
 
-
+// we have four possible moves for the puzzle => down, up, left, swapRight
+// swap function for vector: https://www.geeksforgeeks.org/difference-between-stdswap-and-stdvectorswap/
 vector<vector<int>> PuzzleSolver::swapDown(int index, vector<vector<int>> eightPuzzle) {
     vector<vector<int>> temp;
     temp = eightPuzzle;
@@ -282,4 +297,8 @@ vector<vector<int>> PuzzleSolver::swapRight(int index, vector<vector<int>> eight
         swap(temp.at(2).at(1), temp.at(2).at(2));
     }
     return temp;
+}
+
+void makeChildren(SquareTile* curr, vector<vector<int>> vec) {
+    SquareTile* temp = new SquareTile;
 }

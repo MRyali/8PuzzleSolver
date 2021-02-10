@@ -48,10 +48,14 @@ class PuzzleSolver {
 		bool isGoal;
 		// This is a vector of the states already traversed states to avoid repeats
 		vector<vector<vector<int>>> repeatStates;
+		// priority queue to hold our states
+		priority_queue<SquareTile*> que;
 		// This is a list containg the final solution path from initial state to goal state
 		list<SquareTile*> solutionPath;
 
 	public:
+		// class constructor
+		ProblemSolver();
         // calculate the heuristic value depending on selected algorithm
 		int heuristicVal(vector<vector<int>>);
         // make root node and set up intial puzzle
@@ -63,13 +67,18 @@ class PuzzleSolver {
         // function of possible moves
         void boardMoves(vector<vector<int>>);
         // move down
-        void swapDown (int, vector<vector<int>>);
+        vector<vector<int>> swapDown (int, vector<vector<int>>);
         // move up
-        void swapUp (int, vector<vector<int>>);
+        vector<vector<int>> swapUp (int, vector<vector<int>>);
         // move left
-        void swapLeft (int, vector<vector<int>>);
+        vector<vector<int>> swapLeft (int, vector<vector<int>>);
         // move right
-        void swapRight(int, vector<vector<int>>);
+        vector<vector<int>> swapRight(int, vector<vector<int>>);
+		// create children nodes during each Expansion
+		void makeChildren(SquareTile*);
+
+
+
 
 
 				/* More Functions to come => Still need the following
