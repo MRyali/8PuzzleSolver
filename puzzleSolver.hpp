@@ -34,32 +34,42 @@ struct SquareTile {
 
 class PuzzleSolver {
     private:
-				// Used to see what algorithm the user selects at the beginning
-				int algorithmNum;
-				// This is our root node (aka the initial state)
+	    // Used to see what algorithm the user selects at the beginning
+		int algorithmNum;
+		// This is our root node (aka the initial state)
         SquareTile* root;
-				// This is our goal node (aka the goal state)
+		// This is our goal node (aka the goal state)
         SquareTile* goal;
-				// Used to count how many nodes we expand to reach our goal states for analysis
-				int totalNodes;
-				// Used to count the maximum number of nodes in our priority queue for analysis
-				int maxNodes;
-				// Used to check if the current state is the goal states
-				bool isGoal;
-				// This is a vector of the states already traversed states to avoid repeats
-				vector<vector<vector<int>>> repeatStates;
-				// This is a list containg the final solution path from initial state to goal state
-				list<SquareTile*> solutionPath;
-		public:
+		// Used to count how many nodes we expand to reach our goal states for analysis
+		int totalNodes;
+		// Used to count the maximum number of nodes in our priority queue for analysis
+		int maxNodes;
+		// Used to check if the current state is the goal states
+		bool isGoal;
+		// This is a vector of the states already traversed states to avoid repeats
+		vector<vector<vector<int>>> repeatStates;
+		// This is a list containg the final solution path from initial state to goal state
+		list<SquareTile*> solutionPath;
+
+	public:
         // calculate the heuristic value depending on selected algorithm
-				int heuristicVal(vector<vector<int>>);
+		int heuristicVal(vector<vector<int>>);
         // make root node and set up intial puzzle
         void makeTreeRoot(int);
         // function to make a default puzzle
         vector<vector<int>> makeDefaultPuzzle();
         // function to make a custom puzzle
         vector<vector<int>> makeCustomPuzzle();
-
+        // function of possible moves
+        void boardMoves(vector<vector<int>>);
+        // move down
+        void swapDown (int, vector<vector<int>>);
+        // move up
+        void swapUp (int, vector<vector<int>>);
+        // move left
+        void swapLeft (int, vector<vector<int>>);
+        // move right
+        void swapRight(int, vector<vector<int>>);
 
 
 				/* More Functions to come => Still need the following

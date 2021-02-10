@@ -7,15 +7,14 @@
 
 #include "puzzleSolver.hpp"
 
-// constructor => initialize root to NULL
-PuzzleSolver::PuzzleSolver() {
+// class construcotr initializes root to NULL
+ProblemSolver::ProblemSolver() {
     root = NULL;
 }
 
 // makes the root node and initial tree for eventual solutionPath
 void PuzzleSolver::makeTreeRoot (int a) {
-
-  // create a SquareTile object
+    // create a SquareTile object
     SquareTile* squareT = new SquareTile;
     //set all of the nodes to null to initialize tree
     squareT->parentNode = NULL;
@@ -29,11 +28,13 @@ void PuzzleSolver::makeTreeRoot (int a) {
 
     if (a == 1) { // User chose to use deafult 8 puzzle
         squareT->eightPuzzle = makeDefaultPuzzle();
+        root = squareT;
     }
     else if (a == 2) { // User chose to use custom 8 puzzle
         squareT->eightPuzzle = makeCustomPuzzle();
+        root = squareT;
     }
-    else {
+    else { // invalid choice
         cout << "Invalid entry. Program Exited." << endl;
         return;
     }
@@ -162,4 +163,123 @@ vector<vector<int>> PuzzleSolver::makeCustomPuzzle() {
     customPuzzle.push_back(v3);
 
     return customPuzzle;
+}
+
+void PuzzleSolver::boardMoves(vector<vector<int>> eightPuzzle) {
+    // location of zero in the puzzle
+    int index = 0;
+    for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < 3; j++) {
+        if (eightPuzzle.at(i).at(j) == 0) {
+          index = (j + 1) + (3 * i);
+        }
+      }
+    }
+
+    // middle
+    if (index == 5) {
+        vector<vector<int>> t1 = swapDown(index, eightPuzzle);
+    }
+    else if (index % 2 == 1) { //corners
+        // corner swap
+    }
+    else if (index % 2 == 0) { // middle edge
+        //middleedge swap
+    }
+    else {
+      cout << "No zero found. Error." << endl;
+      return;
+    }
+}
+
+
+vector<vector<int>> PuzzleSolver::swapDown(int index, vector<vector<int>> eightPuzzle) {
+    vector<vector<int>> temp;
+    temp = eightPuzzle;
+    if (index == 1) {
+        swap(temp.at(0).at(0), temp.at(1).at(0));
+    }
+    else if (index == 2) {
+        swap(temp.at(0).at(1), temp.at(1).at(1));
+    }
+    else if (index == 3) {
+        swap(temp.at(0).at(2), temp.at(1).at(2));
+    }
+    else if (index == 4) {
+        swap(temp.at(1).at(0), temp.at(2).at(0));
+    }
+    else if (index == 5) {
+        swap(temp.at(1).at(1), temp.at(2).at(1));
+    }
+    else if (index == 6) {
+        swap(temp.at(1).at(2), temp.at(2).at(2));
+    }
+    return temp;
+}
+
+
+vector<vector<int>> PuzzleSolver::swapUp(int index, vector<vector<int>> eightPuzzle) {
+    vector<vector<int>> temp;
+    temp = eightPuzzle;
+    if (index == 4) {
+        swap(temp.at(1).at(0), temp.at(0).at(0));
+    }
+    else if (index == 5) {
+        swap(temp.at(1).at(1), temp.at(0).at(1));
+    }
+    else if (index == 6) {
+        swap(temp.at(1).at(2), temp.at(0).at(2));
+    }
+    else if (index == 7) {
+        swap(temp.at(2).at(0), temp.at(1).at(0));
+    }
+    else if (index == 8) {
+        swap(temp.at(2).at(1), temp.at(1).at(1));
+    }
+    return temp;
+}
+
+vector<vector<int>> PuzzleSolver::swapLeft(int index, vector<vector<int>> eightPuzzle) {
+    vector<vector<int>> temp;
+    temp = eightPuzzle;
+    if (index == 2) {
+        swap(temp.at(0).at(1), temp.at(0).at(0));
+    }
+    if (index == 3) {
+        swap(temp.at(0).at(2), temp.at(0).at(1));
+    }
+    else if (index == 5) {
+        swap(temp.at(1).at(1), temp.at(1).at(0));
+    }
+    else if (index == 6) {
+        swap(temp.at(1).at(2), temp.at(1).at(1));
+    }
+    else if (index == 8) {
+        swap(temp.at(2).at(1), temp.at(2).at(0));
+    }
+    return temp;
+}
+
+vector<vector<int>> PuzzleSolver::swapRight(int index, vector<vector<int>> eightPuzzle) {
+    vector<vector<int>> temp;
+    temp = eightPuzzle;
+    if (index == 1) {
+        swap(temp.at(0).at(0), temp.at(0).at(1));
+    }
+    if (index == 2) {
+        swap(temp.at(0).at(1), temp.at(0).at(2));
+    }
+    else if (index == 4) {
+        swap(temp.at(1).at(0), temp.at(1).at(1));
+    }
+    if (index == 5) {
+        swap(temp.at(1).at(1), temp.at(1).at(2));
+    }
+    if (index == 7) {
+        swap(temp.at(2).at(0), temp.at(2).at(1));
+    }
+    else if (index == 8) {
+        swap(temp.at(2).at(1), temp.at(2).at(2));
+    }
+    return temp;
 }

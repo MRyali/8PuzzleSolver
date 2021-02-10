@@ -18,9 +18,9 @@ int main(int argc, const char * argv[]) {
 
     PuzzleSolver t1;
 
-    cout << "This is Mayur Ryali's (862076991) solver for the 8 puzzle." << endl << endl;
+    cout << "My name is Mayur Ryali and this is my solver for the 8 puzzle." << endl << endl;
 
-    cout << "Choose if ypu want to use a default puzzle or your own (1 or 2): " << endl;
+    cout << "Choose if you want to use a default puzzle or your own (1 or 2): " << endl;
     cin >> puzzleType;
     cout << endl;
 
