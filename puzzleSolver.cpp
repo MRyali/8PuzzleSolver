@@ -8,7 +8,7 @@
 #include "puzzleSolver.hpp"
 
 // class construcotr initializes root to NULL
-ProblemSolver::ProblemSolver() {
+PuzzleSolver::PuzzleSolver() {
     root = NULL;
 }
 
@@ -40,7 +40,7 @@ void PuzzleSolver::makeTreeRoot (int a) {
         // store the puzzle to compare for repeats later
         repeatStates.push_back(root->eightPuzzle);
         // print root
-        printPuzzle(root->eightPuzzle);
+        printPuzzle(root);
     }
     else if (a == 2) { // User chose to use custom 8 puzzle
         squareT->eightPuzzle = makeCustomPuzzle();
@@ -49,7 +49,7 @@ void PuzzleSolver::makeTreeRoot (int a) {
         que.push(root);
         // store the puzzle to compare for repeats later
         repeatStates.push_back(root->eightPuzzle);
-        printPuzzle(root->eightPuzzle);
+        printPuzzle(root);
     }
     else { // invalid choice
         cout << "Invalid entry. Program Exited." << endl;
@@ -89,7 +89,7 @@ void PuzzleSolver::runAlgorithm(int a) {
 int PuzzleSolver::heuristicVal (vector<vector<int>> puzzle) {
     int heuristicVal = 0;
 
-    vector<vector<int>> goalPuzzle makeGoal();
+    vector<vector<int>> goalPuzzle = makeGoal();
 
     // Uniform Cost Search (BFS) where heuristic is zero
     if (algorithmNum == 1) {
@@ -210,7 +210,7 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
 
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
-            if (eightPuzzle.at(i).at(j) == 0) {
+            if (curr->eightPuzzle.at(i).at(j) == 0) {
                 index = (j + 1) + (3 * i); // index at which the zero is at
             }
         }
@@ -315,9 +315,9 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
      // check if goal state was found otherwise recursively run this function to keep finding children
      // Credit: output content was taken from Project 1 assignment sheet example
     if (!isGoal) {
-        if (que.top != NULL) { // checks if the queue is emptyt => if EMPTY(nodes) then return "failure" from above
-            printPuzzle(que.top); // prints the node at the top of the queuue
-            boardMoves(que.top); // recursively expand children until goal is found
+        if (que.top() != NULL) { // checks if the queue is emptyt => if EMPTY(nodes) then return "failure" from above
+            printPuzzle(que.top()); // prints the node at the top of the queuue
+            boardMoves(que.top()); // recursively expand children until goal is found
         }
     }
     else { //goal was found
@@ -325,7 +325,7 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
             que.pop();
         }
 
-        printPuzzle(que.top); // prints the goal which is also the node at top of queue
+        printPuzzle(que.top()); // prints the goal which is also the node at top of queue
 
         // the following print statements were adapted form the Project 1 assignment sheet
         cout << "This is the goal state!!!!!!" << endl;
@@ -337,7 +337,7 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
         cout << maxNodes << endl;
 
         cout << "Goal Node depth: ";
-        cout << que.top->movementCost << endl;
+        cout << que.top()->movementCost << endl;
 
         // exit upon reaching goal
         return;
@@ -474,7 +474,7 @@ void PuzzleSolver::makeChildren1(SquareTile* curr, vector<vector<int>> vec) {
 
         // calculate total nodes and max nodes in priority_queue
         totalNodes += 1;
-        if (maxnodes <= que.size()) {
+        if (maxNodes <= que.size()) {
             maxNodes = que.size();
         }
 
@@ -517,7 +517,7 @@ void PuzzleSolver::makeChildren2(SquareTile* curr, vector<vector<int>> vec) {
 
         // calculate total nodes and max nodes in priority_queue
         totalNodes += 1;
-        if (maxnodes <= que.size()) {
+        if (maxNodes <= que.size()) {
             maxNodes = que.size();
         }
 
@@ -560,7 +560,7 @@ void PuzzleSolver::makeChildren3(SquareTile* curr, vector<vector<int>> vec) {
 
         // calculate total nodes and max nodes in priority_queue
         totalNodes += 1;
-        if (maxnodes <= que.size()) {
+        if (maxNodes <= que.size()) {
             maxNodes = que.size();
         }
 
@@ -603,7 +603,7 @@ void PuzzleSolver::makeChildren4(SquareTile* curr, vector<vector<int>> vec) {
 
         // calculate total nodes and max nodes in priority_queue
         totalNodes += 1;
-        if (maxnodes <= que.size()) {
+        if (maxNodes <= que.size()) {
             maxNodes = que.size();
         }
 

@@ -52,7 +52,7 @@ class PuzzleSolver {
 
 	public:
 		// class constructor
-		ProblemSolver();
+		PuzzleSolver();
         // calculate the heuristic value depending on selected algorithm
 		int heuristicVal(vector<vector<int>>);
         // make root node and set up intial puzzle
@@ -64,7 +64,7 @@ class PuzzleSolver {
         // function to make a goal puzzleType
         vector<vector<int>> makeGoal();
         // function of possible moves
-        void boardMoves(vector<vector<int>>);
+        void boardMoves(SquareTile*);
         // move down
         vector<vector<int>> swapDown (int, vector<vector<int>>);
         // move up
@@ -74,10 +74,10 @@ class PuzzleSolver {
         // move right
         vector<vector<int>> swapRight(int, vector<vector<int>>);
 		// create children nodes during each Expansion
-		void makeChildren1(SquareTile*);
-        void makeChildren2(SquareTile*);
-        void makeChildren3(SquareTile*);
-        void makeChildren4(SquareTile*);
+		void makeChildren1(SquareTile*, vector<vector<int>>);
+        void makeChildren2(SquareTile*, vector<vector<int>>);
+        void makeChildren3(SquareTile*, vector<vector<int>>);
+        void makeChildren4(SquareTile*, vector<vector<int>>);
         // function to check if a state is a repeat
         bool isRepeatState(vector<vector<int>>);
         // function to check if a state is the goalTemp
