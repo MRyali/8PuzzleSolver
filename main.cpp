@@ -34,6 +34,7 @@ int main(int argc, const char * argv[]) {
 
     cin >> algorithmNum;
 
+    t1.runAlgorithm(algorithmNum);
 
     cout << endl;
 

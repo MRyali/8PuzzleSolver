@@ -39,6 +39,8 @@ void PuzzleSolver::makeTreeRoot (int a) {
         que.push(root);
         // store the puzzle to compare for repeats later
         repeatStates.push_back(root->eightPuzzle);
+        // print root
+        printPuzzle(root->eightPuzzle);
     }
     else if (a == 2) { // User chose to use custom 8 puzzle
         squareT->eightPuzzle = makeCustomPuzzle();
@@ -47,6 +49,7 @@ void PuzzleSolver::makeTreeRoot (int a) {
         que.push(root);
         // store the puzzle to compare for repeats later
         repeatStates.push_back(root->eightPuzzle);
+        printPuzzle(root->eightPuzzle);
     }
     else { // invalid choice
         cout << "Invalid entry. Program Exited." << endl;
@@ -54,7 +57,35 @@ void PuzzleSolver::makeTreeRoot (int a) {
     }
 }
 
-// Val Calculation algorithm: https://www.geeksforgeeks.org/a-search-algorithm/
+// function runs the user-selected algorithm to solve the puzzle
+void PuzzleSolver::runAlgorithm(int a) {
+    if (root != NULL) { // root is not empty
+        for (int i = 0; i < 3; i++) { // check if root is valid puzzle
+            for (int j = 0; j < 3; j++) {
+                if (!(root->eightPuzzle.at(i).at(j) >= 0) && !(root->eightPuzzle.at(i).at(j) >= 0)) {
+                    cout << "Invalid root. Error. " << endl;
+                    return;
+                }
+            }
+        }
+
+        algorithmNum = a; // store user-selected algorithm
+
+        if (a == 1 || a == 2 || a == 3) {
+            boardMoves(root);
+        }
+        else {
+            cout << "Invalid algorithm. Error." << endl;
+            return;
+        }
+    }
+    else {
+        cout << "Invalid root. Error." << endl;
+        return;
+    }
+}
+
+// Credit: Val Calculation algorithm: https://www.geeksforgeeks.org/a-search-algorithm/
 int PuzzleSolver::heuristicVal (vector<vector<int>> puzzle) {
     int heuristicVal = 0;
 
@@ -69,7 +100,7 @@ int PuzzleSolver::heuristicVal (vector<vector<int>> puzzle) {
         for (int i = 0; i < 3; i++) { //rows
             for (int j = 0; j < 3; j++) { //colums
                 if (puzzle.at(i).at(j) != goalPuzzle.at(i).at(j)) {
-                    heuristicVal++; // number of misplaced tiles
+                    heuristicVal += 1; // number of misplaced tiles
                 }
             }
         }
@@ -160,6 +191,15 @@ vector<vector<int>> PuzzleSolver::makeCustomPuzzle() {
 }
 
 void PuzzleSolver::boardMoves(SquareTile* curr) {
+    // check if the current node is the goal otherwise pop it out of the queue
+    if (checkGoal(curr->eightPuzzle)) {
+        isGoal = true;
+        goal = curr;
+    }
+    else {
+        que.pop();
+    }
+
     // location of zero in the puzzle
     int index = 0;
 
@@ -169,11 +209,11 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
     vector<vector<int>> t4;
 
     for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < 3; j++) {
-        if (eightPuzzle.at(i).at(j) == 0) {
-          index = (j + 1) + (3 * i);
+        for (int j = 0; j < 3; j++) {
+            if (eightPuzzle.at(i).at(j) == 0) {
+                index = (j + 1) + (3 * i); // index at which the zero is at
+            }
         }
-      }
     }
 
     if (index == 5) { // middle => 4 possible moves
@@ -260,10 +300,52 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
       cout << "No zero found. Error." << endl;
       return;
     }
+
+    /* General Search algorithm (from Project 1 assignment sheet)
+        function general-search(problem, QUEUEING-FUNCTION)
+        nodes = MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
+        loop do
+            if EMPTY(nodes) then return "failure"
+                node = REMOVE-FRONT(nodes)
+            if problem.GOAL-TEST(node.STATE) succeeds then return node
+                nodes = QUEUEING-FUNCTION(nodes, EXPAND(node, problem.OPERATORS))
+        end
+    */
+
+     // check if goal state was found otherwise recursively run this function to keep finding children
+     // Credit: output content was taken from Project 1 assignment sheet example
+    if (!isGoal) {
+        if (que.top != NULL) { // checks if the queue is emptyt => if EMPTY(nodes) then return "failure" from above
+            printPuzzle(que.top); // prints the node at the top of the queuue
+            boardMoves(que.top); // recursively expand children until goal is found
+        }
+    }
+    else { //goal was found
+        while(que.top() != goal) { // find the child that is the solution by popping until we reach the max depth of the tree
+            que.pop();
+        }
+
+        printPuzzle(que.top); // prints the goal which is also the node at top of queue
+
+        // the following print statements were adapted form the Project 1 assignment sheet
+        cout << "This is the goal state!!!!!!" << endl;
+
+        cout << "Total nodes expanded to find solution: ";;
+        cout << totalNodes << endl;
+
+        cout << "Max nodes ever in queue: ";
+        cout << maxNodes << endl;
+
+        cout << "Goal Node depth: ";
+        cout << que.top->movementCost << endl;
+
+        // exit upon reaching goal
+        return;
+    }
 }
 
 // we have four possible moves for the puzzle => down, up, left, swapRight
-// swap function for vector: https://www.geeksforgeeks.org/difference-between-stdswap-and-stdvectorswap/
+// Credit: swap function for vector: https://www.geeksforgeeks.org/difference-between-stdswap-and-stdvectorswap/
 vector<vector<int>> PuzzleSolver::swapDown(int index, vector<vector<int>> eightPuzzle) {
     vector<vector<int>> temp;
     temp = eightPuzzle;
@@ -367,7 +449,7 @@ vector<vector<int>> PuzzleSolver::swapRight(int index, vector<vector<int>> eight
  * is the child a duplicate?
  * If it is a no to all of the questions then we continue making children and asking the questions.
  */
-void makeChildren1(SquareTile* curr, vector<vector<int>> vec) {
+void PuzzleSolver::makeChildren1(SquareTile* curr, vector<vector<int>> vec) {
     // temp SquareTile
     SquareTile* temp = new SquareTile;
 
@@ -392,7 +474,9 @@ void makeChildren1(SquareTile* curr, vector<vector<int>> vec) {
 
         // calculate total nodes and max nodes in priority_queue
         totalNodes += 1;
-        maxNodes = que.size();
+        if (maxnodes <= que.size()) {
+            maxNodes = que.size();
+        }
 
         if (checkGoal(curr->eightPuzzle)) {
             isGoal = true;
@@ -408,7 +492,7 @@ void makeChildren1(SquareTile* curr, vector<vector<int>> vec) {
     }
 }
 
-void makeChildren2(SquareTile* curr, vector<vector<int>> vec) {
+void PuzzleSolver::makeChildren2(SquareTile* curr, vector<vector<int>> vec) {
     // temp SquareTile
     SquareTile* temp = new SquareTile;
 
@@ -433,7 +517,9 @@ void makeChildren2(SquareTile* curr, vector<vector<int>> vec) {
 
         // calculate total nodes and max nodes in priority_queue
         totalNodes += 1;
-        maxNodes = que.size();
+        if (maxnodes <= que.size()) {
+            maxNodes = que.size();
+        }
 
         if (checkGoal(curr->eightPuzzle)) {
             isGoal = true;
@@ -449,7 +535,7 @@ void makeChildren2(SquareTile* curr, vector<vector<int>> vec) {
     }
 }
 
-void makeChildren3(SquareTile* curr, vector<vector<int>> vec) {
+void PuzzleSolver::makeChildren3(SquareTile* curr, vector<vector<int>> vec) {
     // temp SquareTile
     SquareTile* temp = new SquareTile;
 
@@ -474,7 +560,9 @@ void makeChildren3(SquareTile* curr, vector<vector<int>> vec) {
 
         // calculate total nodes and max nodes in priority_queue
         totalNodes += 1;
-        maxNodes = que.size();
+        if (maxnodes <= que.size()) {
+            maxNodes = que.size();
+        }
 
         if (checkGoal(curr->eightPuzzle)) {
             isGoal = true;
@@ -490,7 +578,7 @@ void makeChildren3(SquareTile* curr, vector<vector<int>> vec) {
     }
 }
 
-void makeChildren4(SquareTile* curr, vector<vector<int>> vec) {
+void PuzzleSolver::makeChildren4(SquareTile* curr, vector<vector<int>> vec) {
     // temp SquareTile
     SquareTile* temp = new SquareTile;
 
@@ -515,7 +603,9 @@ void makeChildren4(SquareTile* curr, vector<vector<int>> vec) {
 
         // calculate total nodes and max nodes in priority_queue
         totalNodes += 1;
-        maxNodes = que.size();
+        if (maxnodes <= que.size()) {
+            maxNodes = que.size();
+        }
 
         if (checkGoal(curr->eightPuzzle)) {
             isGoal = true;
@@ -532,7 +622,7 @@ void makeChildren4(SquareTile* curr, vector<vector<int>> vec) {
 }
 
 // checks if a puzzle is the goal puzzle
-bool checkGoal(vector<vector<int>> eightPuzzle) {
+bool PuzzleSolver::checkGoal(vector<vector<int>> eightPuzzle) {
     vector<vector<int>> goalTemp = makeGoal();
 
     for (int i = 0; i < 3; i++) {
@@ -546,7 +636,7 @@ bool checkGoal(vector<vector<int>> eightPuzzle) {
 }
 
 // checks if this state has already been traversed through
-bool isRepeatState(vector<vector<int>> eightPuzzle) {
+bool PuzzleSolver::isRepeatState(vector<vector<int>> eightPuzzle) {
     for (int i = 0; i < repeatStates.size(); i++) {
         if (repeatStates.at(i) == eightPuzzle) {
             return false;
@@ -555,7 +645,7 @@ bool isRepeatState(vector<vector<int>> eightPuzzle) {
     return true;
 }
 
-vector<vector<int>> makeGoal() {
+vector<vector<int>> PuzzleSolver::makeGoal() {
     vector<vector<int>> goalPuzzle;
 
     // vectors for each row of the 2D puzzle
@@ -579,4 +669,21 @@ vector<vector<int>> makeGoal() {
     goalPuzzle.push_back(v3);
 
     return goalPuzzle;
+}
+
+// prints the current puzzle and its heuristic and movement cost
+// The statements for the values was adapted from the assignment sheet
+void PuzzleSolver::printPuzzle(SquareTile* curr) {
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            cout << curr->eightPuzzle.at(i).at(j) << " ";
+        }
+        cout << endl << endl;
+    }
+    if (curr != root) { // root does not have heuristic or movement cost
+        cout << "This was the best state to expand. This state had h(n) = ";
+        cout << curr->heuristicVal;
+        cout << " and g(n) = ";
+        cout << curr->movementCost << endl;
+    }
 }

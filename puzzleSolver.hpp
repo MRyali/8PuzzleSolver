@@ -12,7 +12,6 @@
 #include <iostream>
 #include <vector>
 #include <queue>
-#include <list>
 #include <cmath>
 
 using namespace std;
@@ -50,8 +49,6 @@ class PuzzleSolver {
 		vector<vector<vector<int>>> repeatStates;
 		// priority queue to hold our states
 		priority_queue<SquareTile*> que;
-		// This is a list containg the final solution path from initial state to goal state
-		list<SquareTile*> solutionPath;
 
 	public:
 		// class constructor
@@ -85,6 +82,10 @@ class PuzzleSolver {
         bool isRepeatState(vector<vector<int>>);
         // function to check if a state is the goalTemp
         bool checkGoal(vector<vector<int>>);
+        // function will display the puzzle in a grid format
+        void printPuzzle(SquareTile*);
+        // function that runs search algorithms
+        void runAlgorithm(int a);
 
 
 
@@ -94,16 +95,15 @@ class PuzzleSolver {
 
 
 		/* More Functions to come => Still need the following
-			* Use the selected algorithm
+			* Use the selected algorithm -------> Done
 		    * 4 possible movement => up, down, left, right -------> Done
 			* Expansion of Node for children -------> Done
 			* Make the puzzle tree root to allow for decision tree and its Expansion -------> Done
 			* Calculation of number of nodes (max in queue and total) -------> Done
 			* Repeat comparison -------> Done
 			* Goal comparison -------> Done
-			* Current state display
-			* Solution display
-			* Valid puzzle check (when user enters custom puzzle)
+			* Current state display -------> Done
+			* Valid puzzle check (when user enters custom puzzle) -------> Done
 			* etc. (may need more but this is it for now)
          */
 
