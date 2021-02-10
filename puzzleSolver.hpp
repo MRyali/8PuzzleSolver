@@ -64,6 +64,8 @@ class PuzzleSolver {
         vector<vector<int>> makeDefaultPuzzle();
         // function to make a custom puzzle
         vector<vector<int>> makeCustomPuzzle();
+        // function to make a goal puzzleType
+        vector<vector<int>> makeGoal();
         // function of possible moves
         void boardMoves(vector<vector<int>>);
         // move down
@@ -75,25 +77,35 @@ class PuzzleSolver {
         // move right
         vector<vector<int>> swapRight(int, vector<vector<int>>);
 		// create children nodes during each Expansion
-		void makeChildren(SquareTile*);
+		void makeChildren1(SquareTile*);
+        void makeChildren2(SquareTile*);
+        void makeChildren3(SquareTile*);
+        void makeChildren4(SquareTile*);
+        // function to check if a state is a repeat
+        bool isRepeatState(vector<vector<int>>);
+        // function to check if a state is the goalTemp
+        bool checkGoal(vector<vector<int>>);
 
 
 
 
 
-				/* More Functions to come => Still need the following
-				 * USe the selected algorithm
-				 * 4 possible movement => up, down, left, right
-				 * Expansion of Node for children
-				 * Make the puzzle tree root to allow for decision tree and its Expansion
-				 * Calculation of number of nodes (max in queue and total)
-				 * Repeat comparison
-				 * Goal comparison
-				 * Current state display
-				 * Solution display
-				 * Valid puzzle check (when user enters custom puzzle)
-				 * etc. (may need more but this is it for now)
-				*/
+
+
+
+		/* More Functions to come => Still need the following
+			* Use the selected algorithm
+		    * 4 possible movement => up, down, left, right -------> Done
+			* Expansion of Node for children -------> Done
+			* Make the puzzle tree root to allow for decision tree and its Expansion -------> Done
+			* Calculation of number of nodes (max in queue and total) -------> Done
+			* Repeat comparison -------> Done
+			* Goal comparison -------> Done
+			* Current state display
+			* Solution display
+			* Valid puzzle check (when user enters custom puzzle)
+			* etc. (may need more but this is it for now)
+         */
 
 };
 
