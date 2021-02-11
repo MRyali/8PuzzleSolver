@@ -211,7 +211,11 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
             if (curr->eightPuzzle.at(i).at(j) == 0) {
-                index = (j + 1) + (3 * i); // index at which the zero is at
+                //index = (j + 1) + (3 * i); // index at which the zero is at
+                break;
+            }
+            else{
+                index += 1;
             }
         }
     }
