@@ -5,7 +5,7 @@
 //  Created by Mayur Ryali on 2/8/21.
 //
 
-#include "puzzleSolver.hpp"
+#include "PuzzleSolver.hpp"
 
 // class construcotr initializes root to NULL
 PuzzleSolver::PuzzleSolver() {
@@ -49,7 +49,7 @@ void PuzzleSolver::makeTreeRoot (int a) {
         que.push(root);
         // store the puzzle to compare for repeats later
         repeatStates.push_back(root->eightPuzzle);
-        printPuzzle(root);
+        //printPuzzle(root);
     }
     else { // invalid choice
         cout << "Invalid entry. Program Exited." << endl;
@@ -159,7 +159,7 @@ vector<vector<int>> PuzzleSolver::makeCustomPuzzle() {
     // vector for custom puzzleType
     vector<vector<int>> customPuzzle;
 
-    cout << "Please enter row 1 of your puzzle using space in between number: " << endl;
+    cout << "Please enter row 1 of your puzzle using space in between numbers 1-8 and 0 for missing space: " << endl;
     cin >> a >> b >> c;
     cout << endl;
 
@@ -167,7 +167,7 @@ vector<vector<int>> PuzzleSolver::makeCustomPuzzle() {
     v1.push_back(b);
     v1.push_back(c);
 
-    cout << "Please enter row 2 of your puzzle using space in between number: " << endl;
+    cout << "Please enter row 2 of your puzzle using space in between numbers 1-8 and 0 for missing space: " << endl;
     cin >> a >> b >> c;
     cout << endl;
 
@@ -175,7 +175,7 @@ vector<vector<int>> PuzzleSolver::makeCustomPuzzle() {
     v2.push_back(b);
     v2.push_back(c);
 
-    cout << "Please enter row 3 of your puzzle using space in between number: " << endl;
+    cout << "Please enter row 3 of your puzzle using space in between numbers 1-8 and 0 for missing space: " << endl;
     cin >> a >> b >> c;
     cout << endl;
 
@@ -192,13 +192,21 @@ vector<vector<int>> PuzzleSolver::makeCustomPuzzle() {
 
 void PuzzleSolver::boardMoves(SquareTile* curr) {
     // check if the current node is the goal otherwise pop it out of the queue
+
+    printTest(curr, "Root before pop");
+
     if (checkGoal(curr->eightPuzzle)) {
+        cout << "Inside If" << endl;
         isGoal = true;
         goal = curr;
+
     }
     else {
+        cout << "Inside else" << endl;
         que.pop();
     }
+
+    printTest(que.top(), "After the pop");
 
     // location of zero in the puzzle
     int index = 0;
@@ -212,6 +220,7 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
         for (int j = 0; j < 3; j++) {
             if (curr->eightPuzzle.at(i).at(j) == 0) {
                 //index = (j + 1) + (3 * i); // index at which the zero is at
+                index += 1;
                 break;
             }
             else{
@@ -219,6 +228,7 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
             }
         }
     }
+
 
     if (index == 5) { // middle => 4 possible moves
         t1 = swapDown(index, curr->eightPuzzle);
@@ -318,6 +328,7 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
 
      // check if goal state was found otherwise recursively run this function to keep finding children
      // Credit: output content was taken from Project 1 assignment sheet example
+    /*
     if (!isGoal) {
         if (que.top() != NULL) { // checks if the queue is emptyt => if EMPTY(nodes) then return "failure" from above
             printPuzzle(que.top()); // prints the node at the top of the queuue
@@ -346,6 +357,7 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
         // exit upon reaching goal
         return;
     }
+     */
 }
 
 // we have four possible moves for the puzzle => down, up, left, swapRight
@@ -690,4 +702,10 @@ void PuzzleSolver::printPuzzle(SquareTile* curr) {
         cout << " and g(n) = ";
         cout << curr->movementCost << endl;
     }
+}
+
+void PuzzleSolver::printTest(SquareTile* curr, string a) {
+    cout << a << endl;
+    printPuzzle(curr);
+    cout << endl << endl;
 }
