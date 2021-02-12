@@ -474,7 +474,7 @@ void PuzzleSolver::makeChildren1(SquareTile* curr, vector<vector<int>> vec) {
         return;
     }
     // if goal is not reached check if state is a repeat and if child is the goal
-    if (!isRepeatState(vec)) {
+    if (isRepeatState(vec)) {
         // calculate heuristic and movement cost
         temp->eightPuzzle = vec;
         temp->heuristicVal = heuristicVal(vec);
@@ -517,7 +517,7 @@ void PuzzleSolver::makeChildren2(SquareTile* curr, vector<vector<int>> vec) {
         return;
     }
     // if goal is not reached check if state is a repeat and if child is the goal
-    if (!isRepeatState(vec)) {
+    if (isRepeatState(vec)) {
         // calculate heuristic and movement cost
         temp->eightPuzzle = vec;
         temp->heuristicVal = heuristicVal(vec);
@@ -560,7 +560,7 @@ void PuzzleSolver::makeChildren3(SquareTile* curr, vector<vector<int>> vec) {
         return;
     }
     // if goal is not reached check if state is a repeat and if child is the goal
-    if (!isRepeatState(vec)) {
+    if (isRepeatState(vec)) {
         // calculate heuristic and movement cost
         temp->eightPuzzle = vec;
         temp->heuristicVal = heuristicVal(vec);
@@ -603,7 +603,7 @@ void PuzzleSolver::makeChildren4(SquareTile* curr, vector<vector<int>> vec) {
         return;
     }
     // if goal is not reached check if state is a repeat and if child is the goal
-    if (!isRepeatState(vec)) {
+    if (isRepeatState(vec)) {
         // calculate heuristic and movement cost
         temp->eightPuzzle = vec;
         temp->heuristicVal = heuristicVal(vec);
