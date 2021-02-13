@@ -67,13 +67,13 @@ class PuzzleSolver {
         // function of possible moves
         void boardMoves(SquareTile*);
         // move down
-        vector<vector<int>> swapDown (int, vector<vector<int>>);
+        vector<vector<int>> swapDown (int, SquareTile*);
         // move up
-        vector<vector<int>> swapUp (int, vector<vector<int>>);
+        vector<vector<int>> swapUp (int, SquareTile*);
         // move left
-        vector<vector<int>> swapLeft (int, vector<vector<int>>);
+        vector<vector<int>> swapLeft (int, SquareTile*);
         // move right
-        vector<vector<int>> swapRight(int, vector<vector<int>>);
+        vector<vector<int>> swapRight(int, SquareTile*);
         // create children nodes during each Expansion
         void makeChildren1(SquareTile*, vector<vector<int>>);
         void makeChildren2(SquareTile*, vector<vector<int>>);

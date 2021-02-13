@@ -231,10 +231,10 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
 
 
     if (index == 5) { // middle => 4 possible moves
-        t1 = swapDown(index, curr->eightPuzzle);
-        t2 = swapUp(index, curr->eightPuzzle);
-        t3 = swapLeft(index, curr->eightPuzzle);
-        t4 = swapRight(index, curr->eightPuzzle);
+        t1 = swapDown(index, curr);
+        t2 = swapUp(index, curr);
+        t3 = swapLeft(index, curr);
+        t4 = swapRight(index, curr);
 
         makeChildren1(curr, t1);
         makeChildren2(curr, t2);
@@ -244,29 +244,29 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
     }
     else if (index % 2 == 1) { //corners => 2 possible moves
         if (index == 1) {
-            t1 = swapDown(index, curr->eightPuzzle);
-            t2 = swapRight(index, curr->eightPuzzle);
+            t1 = swapDown(index, curr);
+            t2 = swapRight(index, curr);
 
             makeChildren1(curr, t1);
             makeChildren2(curr, t2);
         }
         else if (index == 3) {
-            t1 = swapDown(index, curr->eightPuzzle);
-            t2 = swapLeft(index, curr->eightPuzzle);
+            t1 = swapDown(index, curr);
+            t2 = swapLeft(index, curr);
 
             makeChildren1(curr, t1);
             makeChildren2(curr, t2);
         }
         else if (index == 7) {
-            t1 = swapUp(index, curr->eightPuzzle);
-            t2 = swapRight(index, curr->eightPuzzle);
+            t1 = swapUp(index, curr);
+            t2 = swapRight(index, curr);
 
             makeChildren1(curr, t1);
             makeChildren2(curr, t2);
         }
         else if (index == 9) {
-            t1 = swapUp(index, curr->eightPuzzle);
-            t2 = swapLeft(index, curr->eightPuzzle);
+            t1 = swapUp(index, curr);
+            t2 = swapLeft(index, curr);
 
             makeChildren1(curr, t1);
             makeChildren2(curr, t2);
@@ -274,36 +274,36 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
     }
     else if (index % 2 == 0) { // middle edge => 3 possible moves
         if (index == 2) {
-            t1 = swapDown(index, curr->eightPuzzle);
-            t2 = swapRight(index, curr->eightPuzzle);
-            t3 = swapLeft(index, curr->eightPuzzle);
+            t1 = swapDown(index, curr);
+            t2 = swapRight(index, curr);
+            t3 = swapLeft(index, curr);
 
             makeChildren1(curr, t1);
             makeChildren2(curr, t2);
             makeChildren3(curr, t3);
         }
         else if (index == 4) {
-            t1 = swapDown(index, curr->eightPuzzle);
-            t2 = swapRight(index, curr->eightPuzzle);
-            t3 = swapUp(index, curr->eightPuzzle);
+            t1 = swapDown(index, curr);
+            t2 = swapRight(index, curr);
+            t3 = swapUp(index, curr);
 
             makeChildren1(curr, t1);
             makeChildren2(curr, t2);
             makeChildren3(curr, t3);
         }
         else if (index == 6) {
-            t1 = swapDown(index, curr->eightPuzzle);
-            t2 = swapUp(index, curr->eightPuzzle);
-            t3 = swapLeft(index, curr->eightPuzzle);
+            t1 = swapDown(index, curr);
+            t2 = swapUp(index, curr);
+            t3 = swapLeft(index, curr);
 
             makeChildren1(curr, t1);
             makeChildren2(curr, t2);
             makeChildren3(curr, t3);
         }
         else if (index == 8) {
-            t1 = swapRight(index, curr->eightPuzzle);
-            t2 = swapUp(index, curr->eightPuzzle);
-            t3 = swapLeft(index, curr->eightPuzzle);
+            t1 = swapRight(index, curr);
+            t2 = swapUp(index, curr);
+            t3 = swapLeft(index, curr);
 
             makeChildren1(curr, t1);
             makeChildren2(curr, t2);
@@ -362,9 +362,9 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
 
 // we have four possible moves for the puzzle => down, up, left, swapRight
 // Credit: swap function for vector: https://www.geeksforgeeks.org/difference-between-stdswap-and-stdvectorswap/
-vector<vector<int>> PuzzleSolver::swapDown(int index, vector<vector<int>> eightPuzzle) {
-    vector<vector<int>> temp;
-    temp = eightPuzzle;
+vector<vector<int>> PuzzleSolver::swapDown(int index, SquareTile* curr) {
+    vector<vector<int>> temp = curr->eightPuzzle;
+
     if (index == 1) {
         swap(temp.at(0).at(0), temp.at(1).at(0));
     }
@@ -387,9 +387,9 @@ vector<vector<int>> PuzzleSolver::swapDown(int index, vector<vector<int>> eightP
 }
 
 
-vector<vector<int>> PuzzleSolver::swapUp(int index, vector<vector<int>> eightPuzzle) {
-    vector<vector<int>> temp;
-    temp = eightPuzzle;
+vector<vector<int>> PuzzleSolver::swapUp(int index, SquareTile* curr) {
+    vector<vector<int>> temp = curr->eightPuzzle;
+
     if (index == 4) {
         swap(temp.at(1).at(0), temp.at(0).at(0));
     }
@@ -411,9 +411,9 @@ vector<vector<int>> PuzzleSolver::swapUp(int index, vector<vector<int>> eightPuz
     return temp;
 }
 
-vector<vector<int>> PuzzleSolver::swapLeft(int index, vector<vector<int>> eightPuzzle) {
-    vector<vector<int>> temp;
-    temp = eightPuzzle;
+vector<vector<int>> PuzzleSolver::swapLeft(int index, SquareTile* curr) {
+    vector<vector<int>> temp = curr->eightPuzzle;
+
     if (index == 2) {
         swap(temp.at(0).at(1), temp.at(0).at(0));
     }
@@ -435,9 +435,9 @@ vector<vector<int>> PuzzleSolver::swapLeft(int index, vector<vector<int>> eightP
     return temp;
 }
 
-vector<vector<int>> PuzzleSolver::swapRight(int index, vector<vector<int>> eightPuzzle) {
-    vector<vector<int>> temp;
-    temp = eightPuzzle;
+vector<vector<int>> PuzzleSolver::swapRight(int index, SquareTile* curr) {
+    vector<vector<int>> temp = curr->eightPuzzle;
+
     if (index == 1) {
         swap(temp.at(0).at(0), temp.at(0).at(1));
     }
