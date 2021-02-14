@@ -216,16 +216,27 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
     vector<vector<int>> t3;
     vector<vector<int>> t4;
 
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            if (curr->eightPuzzle.at(i).at(j) == 0) {
-                //index = (j + 1) + (3 * i); // index at which the zero is at
-                index += 1;
-                break;
+    // for loop to find the location of missing space in the current puzzle
+    int index = 0;
+    bool found = false;
+
+    for(int i = 0; i < 3; i++) {
+        for(int j = 0; j < 3; j++) {
+            cout << "Value: " << curr->eightPuzzle.at(i).at(j) << endl;
+            if(curr->eightPuzzle.at(i).at(j) == 0)
+            {
+                found = true;
+                break; // no need to keep checking once zero is found
             }
-            else{
-                index += 1;
+
+            else
+            {
+                index++;
             }
+        }
+        if(found)
+        {
+            break; // no need to keep checking once zero is found
         }
     }
 
@@ -326,9 +337,8 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
         end
     */
 
-     // check if goal state was found otherwise recursively run this function to keep finding children
-     // Credit: output content was taken from Project 1 assignment sheet example
-    /*
+    // check if goal state was found otherwise recursively run this function to keep finding children
+    // Credit: output content was taken from Project 1 assignment sheet exampl
     if (!isGoal) {
         if (que.top() != NULL) { // checks if the queue is emptyt => if EMPTY(nodes) then return "failure" from above
             printPuzzle(que.top()); // prints the node at the top of the queuue
@@ -357,7 +367,6 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
         // exit upon reaching goal
         return;
     }
-     */
 }
 
 // we have four possible moves for the puzzle => down, up, left, swapRight
@@ -406,7 +415,7 @@ vector<vector<int>> PuzzleSolver::swapUp(int index, SquareTile* curr) {
         swap(temp.at(2).at(1), temp.at(1).at(1));
     }
     else if (index == 9) {
-        swap(temp.at(2).at(1), temp.at(1).at(2));
+        swap(temp.at(2).at(2), temp.at(1).at(2));
     }
     return temp;
 }
@@ -494,7 +503,7 @@ void PuzzleSolver::makeChildren1(SquareTile* curr, vector<vector<int>> vec) {
             maxNodes = que.size();
         }
 
-        if (checkGoal(curr->eightPuzzle)) {
+        if (checkGoal(vec)) {
             isGoal = true;
             // set goal node as the child that is the goal state
             goal = curr->childNode1;
@@ -537,7 +546,7 @@ void PuzzleSolver::makeChildren2(SquareTile* curr, vector<vector<int>> vec) {
             maxNodes = que.size();
         }
 
-        if (checkGoal(curr->eightPuzzle)) {
+        if (checkGoal(vec)) {
             isGoal = true;
             // set goal node as the child that is the goal state
             goal = curr->childNode2;
@@ -580,7 +589,7 @@ void PuzzleSolver::makeChildren3(SquareTile* curr, vector<vector<int>> vec) {
             maxNodes = que.size();
         }
 
-        if (checkGoal(curr->eightPuzzle)) {
+        if (checkGoal(vec)) {
             isGoal = true;
             // set goal node as the child that is the goal state
             goal = curr->childNode3;
@@ -623,7 +632,7 @@ void PuzzleSolver::makeChildren4(SquareTile* curr, vector<vector<int>> vec) {
             maxNodes = que.size();
         }
 
-        if (checkGoal(curr->eightPuzzle)) {
+        if (checkGoal(vec)) {
             isGoal = true;
             // set goal node as the child that is the goal state
             goal = curr->childNode4;
