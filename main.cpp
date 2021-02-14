@@ -24,7 +24,7 @@ int main(int argc, const char * argv[]) {
     cin >> puzzleType;
     cout << endl;
 
-    // make initial puzzle
+    // make initial puzzle (default or custom)
     t1.makeTreeRoot(puzzleType);
 
     cout << "Choose one of the following algorithms (1-3): " << endl;
@@ -34,6 +34,7 @@ int main(int argc, const char * argv[]) {
 
     cin >> algorithmNum;
 
+    // run user-selected algorithm on the input puzzle
     t1.runAlgorithm(algorithmNum);
 
     cout << endl;

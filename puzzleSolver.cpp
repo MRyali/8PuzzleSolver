@@ -241,89 +241,41 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
     }
 
 
-    if (index == 5) { // middle => 4 possible moves
-        t1 = swapDown(index, curr);
-        t2 = swapUp(index, curr);
-        t3 = swapLeft(index, curr);
-        t4 = swapRight(index, curr);
-
-        makeChildren1(curr, t1);
-        makeChildren2(curr, t2);
-        makeChildren3(curr, t3);
-        makeChildren4(curr, t4);
-
+    // Make children depending on the location of missing space and possible moves from that location
+    if (index == 4) { // middle position => 4 possible moves
+        IndexFour(curr);
     }
-    else if (index % 2 == 1) { //corners => 2 possible moves
-        if (index == 1) {
-            t1 = swapDown(index, curr);
-            t2 = swapRight(index, curr);
-
-            makeChildren1(curr, t1);
-            makeChildren2(curr, t2);
+    else if (index % 2 == 0) { // corner positions => 2 possible moves
+        if (index == 0) {
+            IndexZero(curr);
         }
-        else if (index == 3) {
-            t1 = swapDown(index, curr);
-            t2 = swapLeft(index, curr);
-
-            makeChildren1(curr, t1);
-            makeChildren2(curr, t2);
-        }
-        else if (index == 7) {
-            t1 = swapUp(index, curr);
-            t2 = swapRight(index, curr);
-
-            makeChildren1(curr, t1);
-            makeChildren2(curr, t2);
-        }
-        else if (index == 9) {
-            t1 = swapUp(index, curr);
-            t2 = swapLeft(index, curr);
-
-            makeChildren1(curr, t1);
-            makeChildren2(curr, t2);
-        }
-    }
-    else if (index % 2 == 0) { // middle edge => 3 possible moves
-        if (index == 2) {
-            t1 = swapDown(index, curr);
-            t2 = swapRight(index, curr);
-            t3 = swapLeft(index, curr);
-
-            makeChildren1(curr, t1);
-            makeChildren2(curr, t2);
-            makeChildren3(curr, t3);
-        }
-        else if (index == 4) {
-            t1 = swapDown(index, curr);
-            t2 = swapRight(index, curr);
-            t3 = swapUp(index, curr);
-
-            makeChildren1(curr, t1);
-            makeChildren2(curr, t2);
-            makeChildren3(curr, t3);
+        else if (index == 2) {
+            IndexTwo(curr);
         }
         else if (index == 6) {
-            t1 = swapDown(index, curr);
-            t2 = swapUp(index, curr);
-            t3 = swapLeft(index, curr);
-
-            makeChildren1(curr, t1);
-            makeChildren2(curr, t2);
-            makeChildren3(curr, t3);
+            IndexSix(curr);
         }
         else if (index == 8) {
-            t1 = swapRight(index, curr);
-            t2 = swapUp(index, curr);
-            t3 = swapLeft(index, curr);
-
-            makeChildren1(curr, t1);
-            makeChildren2(curr, t2);
-            makeChildren3(curr, t3);
+            IndexEight(curr);
+        }
+    }
+    else if (index % 2 == 1) { // middle side positions => 3 possible moves
+        if (index == 1) {
+            IndexOne(curr);
+        }
+        else if (index == 3) {
+            IndexThree(curr);
+        }
+        else if (index == 5) {
+            IndexFive(curr);
+        }
+        else if (index == 7) {
+            IndexSeven(curr);
         }
     }
     else {
-      cout << "No zero found. Error." << endl;
-      return;
+        cout << "Invalid Index. Error." << endl;
+        return;
     }
 
     /* General Search algorithm (from Project 1 assignment sheet)
@@ -717,4 +669,137 @@ void PuzzleSolver::printTest(SquareTile* curr, string a) {
     cout << a << endl;
     printPuzzle(curr);
     cout << endl << endl;
+}
+
+// Missing Space = Index 0 => 2 Possible moves (right, down)
+void PuzzleSolver::IndexZero(SquareTile* curr)
+{
+    vector< vector<int>> t1 = curr->eightPuzzle;
+    vector< vector<int>> t2 = curr->eightPuzzle;
+
+    swapRight(1, t1);
+    makeChildren1(curr, t1);
+
+    swapDown(1, t2);
+    makeChildren2(curr, t2);
+}
+// Missing Space = Index 1 => 3 Possible moves (left, right, down)
+void PuzzleSolver::IndexOne(SquareTile* curr)
+{
+    vector< vector<int>> t1 = curr->eightPuzzle;
+    vector< vector<int>> t2 = curr->eightPuzzle;
+    vector< vector<int>> t3 = curr->eightPuzzle;
+
+    swapLeft(2, t1);
+    makeChildren1(curr, t1);
+
+    swapRight(2, t2);
+    makeChildren2(curr, t2);
+
+    swapDown(2, t3);
+    makeChildren3(curr, t3);
+}
+// Missing Space = Index 2 => 2 Possible moves (left, down)
+void PuzzleSolver::IndexTwo(SquareTile* curr)
+{
+    vector< vector<int>> t1 = curr->eightPuzzle;
+    vector< vector<int>> t2 = curr->eightPuzzle;
+
+    swapLeft(3, t1);
+    makeChildren1(curr, t1);
+
+    swapDown(3, t2);
+    makeChildren2(curr, t2);
+}
+// Missing Space = Index 3 => 3 Possible moves (up, right, down)
+void PuzzleSolver::IndexThree(SquareTile* curr)
+{
+    vector< vector<int>> t1 = curr->eightPuzzle;
+    vector< vector<int>> t2 = curr->eightPuzzle;
+    vector< vector<int>> t3 = curr->eightPuzzle;
+
+    swapUp(4, t1);
+    makeChildren1(curr, t1);
+
+    swapRight(4, t2);
+    makeChildren2(curr, t2);
+
+    swapDown(4, t3);
+    makeChildren3(curr, t3);
+}
+// Missing Space = Index 4 => 4 Possible moves (left, right, down, up)
+void PuzzleSolver::IndexFour(SquareTile* curr)
+{
+    vector<vector<int>> t1 = curr->eightPuzzle;
+    vector<vector<int>> t2 = curr->eightPuzzle;
+    vector<vector<int>> t3 = curr->eightPuzzle;
+    vector<vector<int>> t4 = curr->eightPuzzle;
+
+    swapLeft(5, t1);
+    makeChildren1(curr, t1);
+
+    swapRight(5, t2);
+    makeChildren2(curr, t2);
+
+    swapDown(5, t3);
+    makeChildren3(curr, t3);
+
+    swapUp(5, t4);
+    makeChildren4(curr, t4);
+}
+// Missing Space = Index 5 => 3 Possible moves (left, up, down)
+void PuzzleSolver::IndexFive(SquareTile* curr)
+{
+    vector< vector<int>> t1 = curr->eightPuzzle;
+    vector< vector<int>> t2 = curr->eightPuzzle;
+    vector< vector<int>> t3 = curr->eightPuzzle;
+
+    swapLeft(6, t1);
+    makeChildren1(curr, t1);
+
+    swapUp(6, t2);
+    makeChildren2(curr, t2);
+
+    swapDown(6, t3);
+    makeChildren3(curr, t3);
+}
+// Missing Space = Index 6 => 2 Possible moves (up, right)
+void PuzzleSolver::IndexSix(SquareTile* curr)
+{
+    vector< vector<int>> t1 = curr->eightPuzzle;
+    vector< vector<int>> t2 = curr->eightPuzzle;
+
+    swapUp(7, t1);
+    makeChildren1(curr, t1);
+
+    swapRight(7, t2);
+    makeChildren2(curr, t2);
+}
+// Missing Space = Index 7 => 3 Possible moves (left, right, up)
+void PuzzleSolver::IndexSeven(SquareTile* curr)
+{
+    vector< vector<int>> t1 = curr->eightPuzzle;
+    vector< vector<int>> t2 = curr->eightPuzzle;
+    vector< vector<int>> t3 = curr->eightPuzzle;
+
+    swapLeft(8, t1);
+    makeChildren1(curr, t1);
+
+    swapRight(8, t2);
+    makeChildren2(curr, t2);
+
+    swapUp(8, t3);
+    makeChildren3(curr, t3);
+}
+// Missing Space = Index 8 => 2 Possible moves (left, ups)
+void PuzzleSolver::IndexEight(SquareTile* curr)
+{
+    vector< vector<int>> t1 = curr->eightPuzzle;
+    vector< vector<int>> t2 = curr->eightPuzzle;
+
+    swapLeft(9, t1);
+    makeChildren1(curr, t1);
+
+    swapUp(9, t2);
+    makeChildren2(curr, t2);
 }

@@ -67,20 +67,20 @@ class PuzzleSolver {
         // function of possible moves
         void boardMoves(SquareTile*);
         // move down
-        vector<vector<int>> swapDown (int, SquareTile*);
+        void swapDown (int, vector<vector<int>>&);
         // move up
-        vector<vector<int>> swapUp (int, SquareTile*);
+        void swapUp (int, vector<vector<int>>&);
         // move left
-        vector<vector<int>> swapLeft (int, SquareTile*);
+        void swapLeft (int, vector<vector<int>>&);
         // move right
-        vector<vector<int>> swapRight(int, SquareTile*);
+        void swapRight(int, vector<vector<int>>&);
         // create children nodes during each Expansion
         void makeChildren1(SquareTile*, vector<vector<int>>);
         void makeChildren2(SquareTile*, vector<vector<int>>);
         void makeChildren3(SquareTile*, vector<vector<int>>);
         void makeChildren4(SquareTile*, vector<vector<int>>);
         // function to check if a state is a repeat
-        bool isRepeatState(vector<vector<int>>);
+        bool isNotRepeatState(vector<vector<int>>);
         // function to check if a state is the goalTemp
         bool checkGoal(vector<vector<int>>);
         // function will display the puzzle in a grid format
@@ -89,6 +89,25 @@ class PuzzleSolver {
         void runAlgorithm(int a);
         // print function to test and fiind seg fault
         void printTest(SquareTile*, string);
+        // function to make move if the missing is in index zero of 3x3 grid
+        void IndexZero(SquareTile*);
+        // function to make move if the missing is in index one of 3x3 grid
+        void IndexOne(SquareTile*);
+        // function to make move if the missing is in index two of 3x3 grid
+        void IndexTwo(SquareTile*);
+        // function to make move if the missing is in index three of 3x3 grid
+        void IndexThree(SquareTile*);
+        // function to make move if the missing is in index four of 3x3 grid
+        void IndexFour(SquareTile*);
+        // function to make move if the missing is in index five of 3x3 grid
+        void IndexFive(SquareTile*);
+        // function to make move if the missing is in index six of 3x3 grid
+        void IndexSix(SquareTile*);
+        // function to make move if the missing is in index seven of 3x3 grid
+        void IndexSeven(SquareTile*);
+        // function to make move if the missing is in index eight of 3x3 grid
+        void IndexEight(SquareTile*);
+
 
 
 
