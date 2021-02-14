@@ -128,6 +128,13 @@ class PuzzleSolver {
             * etc. (may need more but this is it for now)
          */
 
+         /**********************************************
+
+         Need to figure out how to reorder the priority queue so that the best move
+         from each expansion will be selected and not all possible nodes.
+
+         ************************************************/
+
 };
 
 #endif /* puzzleSolver_hpp */
