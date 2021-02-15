@@ -13,7 +13,7 @@ PuzzleSolver::PuzzleSolver() {
 }
 
 // makes the root node and initial tree for eventual solutionPath
-// use of priority queue: https://www.geeksforgeeks.org/priority-queue-in-cpp-stl/
+// Credit: use of priority queue: https://www.geeksforgeeks.org/priority-queue-in-cpp-stl/
 void PuzzleSolver::makeTreeRoot (int a) {
     // create a SquareTile object
     SquareTile* squareT = new SquareTile;
@@ -62,7 +62,7 @@ void PuzzleSolver::runAlgorithm(int a) {
     if (root != NULL) { // root is not empty
         for (int i = 0; i < 3; i++) { // check if root is valid puzzle
             for (int j = 0; j < 3; j++) {
-                if (!(root->eightPuzzle.at(i).at(j) >= 0) && !(root->eightPuzzle.at(i).at(j) >= 0)) {
+                if ((root->eightPuzzle.at(i).at(j) < 0) || (root->eightPuzzle.at(i).at(j) > 8)) {
                     cout << "Invalid root. Error. " << endl;
                     return;
                 }
@@ -70,6 +70,8 @@ void PuzzleSolver::runAlgorithm(int a) {
         }
 
         algorithmNum = a; // store user-selected algorithm
+
+        cout << "State Exapnding: " << endl;
 
         if (a == 1 || a == 2 || a == 3) {
             boardMoves(root);
@@ -86,24 +88,26 @@ void PuzzleSolver::runAlgorithm(int a) {
 }
 
 // Credit: Val Calculation algorithm: https://www.geeksforgeeks.org/a-search-algorithm/
-int PuzzleSolver::heuristicVal (vector<vector<int>> puzzle) {
-    int heuristicVal = 0;
+int PuzzleSolver::heuristicVal (vector<vector<int>> vec) {
+    int tempHeuristicVal = 0;
 
     vector<vector<int>> goalPuzzle = makeGoal();
 
-    // Uniform Cost Search (BFS) where heuristic is zero
+    // Uniform Cost Search (BFS) = A* search where heuristic is zero (from assignment page)
     if (algorithmNum == 1) {
-        heuristicVal = 0;
+        tempHeuristicVal = 0;
+        return tempHeuristicVal;
     }
     // A* with Misplaced Tile Heuristic where heuristic is number of misplaced tiles
     else if (algorithmNum == 2) {
         for (int i = 0; i < 3; i++) { //rows
             for (int j = 0; j < 3; j++) { //colums
-                if (puzzle.at(i).at(j) != goalPuzzle.at(i).at(j)) {
-                    heuristicVal += 1; // number of misplaced tiles
+                if (vec.at(i).at(j) != goalPuzzle.at(i).at(j)) {
+                    tempHeuristicVal += 1; // number of misplaced tiles
                 }
             }
         }
+        return tempHeuristicVal;
     }
     // A* with Manhattan Distance Heuristic"
     else if (algorithmNum == 3) {
@@ -111,18 +115,19 @@ int PuzzleSolver::heuristicVal (vector<vector<int>> puzzle) {
             for (int j = 0; j < 3; j++) { //colums of current
                 for (int k = 0; k < 3; k++) { //rows of goal
                     for (int l = 0; l < 3; l++) { //colums of goal
-                        if (puzzle.at(i).at(j) == goalPuzzle.at(k).at(l)) { // abs (current_cell.x – goal.x) + abs (current_cell.y – goal.y)
-                            heuristicVal += abs(i - k) + abs(j-l);
+                        if (goalPuzzle.at(i).at(j) == vec.at(k).at(l)) { // abs (current_cell.x – goal.x) + abs (current_cell.y – goal.y)
+                            tempHeuristicVal += abs(i - k) + abs(j - l);
                         }
                     }
                 }
             }
         }
+        return tempHeuristicVal;
     }
     else {
-        heuristicVal = 0; // default heuristic is zero
+        tempHeuristicVal = 0; // default heuristic is zero
     }
-    return heuristicVal;
+    return tempHeuristicVal;
 }
 
 vector<vector<int>> PuzzleSolver::makeDefaultPuzzle() {
@@ -136,11 +141,11 @@ vector<vector<int>> PuzzleSolver::makeDefaultPuzzle() {
     v1.push_back(3);
 
     v2.push_back(4);
+    v2.push_back(8);
     v2.push_back(0);
-    v2.push_back(6);
 
     v3.push_back(7);
-    v3.push_back(8);
+    v3.push_back(6);
     v3.push_back(5);
 
     // populate the goal puzzle
@@ -192,29 +197,13 @@ vector<vector<int>> PuzzleSolver::makeCustomPuzzle() {
 
 void PuzzleSolver::boardMoves(SquareTile* curr) {
     // check if the current node is the goal otherwise pop it out of the queue
-
-    printTest(curr, "Root before pop");
-
     if (checkGoal(curr->eightPuzzle)) {
-        cout << "Inside If" << endl;
         isGoal = true;
         goal = curr;
-
     }
     else {
-        cout << "Inside else" << endl;
         que.pop();
     }
-
-    printTest(que.top(), "After the pop");
-
-    // location of zero in the puzzle
-    int index = 0;
-
-    vector<vector<int>> t1;
-    vector<vector<int>> t2;
-    vector<vector<int>> t3;
-    vector<vector<int>> t4;
 
     // for loop to find the location of missing space in the current puzzle
     int index = 0;
@@ -231,6 +220,7 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
 
             else
             {
+                cout << "IndexInside: " << index << endl;
                 index++;
             }
         }
@@ -239,7 +229,6 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
             break; // no need to keep checking once zero is found
         }
     }
-
 
     // Make children depending on the location of missing space and possible moves from that location
     if (index == 4) { // middle position => 4 possible moves
@@ -290,7 +279,7 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
     */
 
     // check if goal state was found otherwise recursively run this function to keep finding children
-    // Credit: output content was taken from Project 1 assignment sheet exampl
+    // Credit: output content was taken from Project 1 assignment sheet example
     if (!isGoal) {
         if (que.top() != NULL) { // checks if the queue is emptyt => if EMPTY(nodes) then return "failure" from above
             printPuzzle(que.top()); // prints the node at the top of the queuue
@@ -298,7 +287,7 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
         }
     }
     else { //goal was found
-        while(que.top() != goal) { // find the child that is the solution by popping until we reach the max depth of the tree
+        while(que.top() != goal) { // find the child that is the solution by popping until we reach the node that is the goal
             que.pop();
         }
 
@@ -323,8 +312,8 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
 
 // we have four possible moves for the puzzle => down, up, left, swapRight
 // Credit: swap function for vector: https://www.geeksforgeeks.org/difference-between-stdswap-and-stdvectorswap/
-vector<vector<int>> PuzzleSolver::swapDown(int index, SquareTile* curr) {
-    vector<vector<int>> temp = curr->eightPuzzle;
+void PuzzleSolver::swapDown(int index, vector<vector<int>>& temp) {
+    //vector<vector<int>> temp = vec;
 
     if (index == 1) {
         swap(temp.at(0).at(0), temp.at(1).at(0));
@@ -344,12 +333,12 @@ vector<vector<int>> PuzzleSolver::swapDown(int index, SquareTile* curr) {
     else if (index == 6) {
         swap(temp.at(1).at(2), temp.at(2).at(2));
     }
-    return temp;
+    //return temp;
 }
 
 
-vector<vector<int>> PuzzleSolver::swapUp(int index, SquareTile* curr) {
-    vector<vector<int>> temp = curr->eightPuzzle;
+void PuzzleSolver::swapUp(int index, vector<vector<int>>& temp) {
+    //vector<vector<int>> temp = vec;
 
     if (index == 4) {
         swap(temp.at(1).at(0), temp.at(0).at(0));
@@ -369,16 +358,16 @@ vector<vector<int>> PuzzleSolver::swapUp(int index, SquareTile* curr) {
     else if (index == 9) {
         swap(temp.at(2).at(2), temp.at(1).at(2));
     }
-    return temp;
+    //return temp;
 }
 
-vector<vector<int>> PuzzleSolver::swapLeft(int index, SquareTile* curr) {
-    vector<vector<int>> temp = curr->eightPuzzle;
+void PuzzleSolver::swapLeft(int index, vector<vector<int>>& temp) {
+    //vector<vector<int>> temp = vec;
 
     if (index == 2) {
         swap(temp.at(0).at(1), temp.at(0).at(0));
     }
-    if (index == 3) {
+    else if (index == 3) {
         swap(temp.at(0).at(2), temp.at(0).at(1));
     }
     else if (index == 5) {
@@ -393,16 +382,16 @@ vector<vector<int>> PuzzleSolver::swapLeft(int index, SquareTile* curr) {
     else if (index == 9) {
         swap(temp.at(2).at(2), temp.at(2).at(1));
     }
-    return temp;
+    //return temp;
 }
 
-vector<vector<int>> PuzzleSolver::swapRight(int index, SquareTile* curr) {
-    vector<vector<int>> temp = curr->eightPuzzle;
+void PuzzleSolver::swapRight(int index, vector<vector<int>>& temp) {
+    //vector<vector<int>> temp = vec;
 
     if (index == 1) {
         swap(temp.at(0).at(0), temp.at(0).at(1));
     }
-    if (index == 2) {
+    else if (index == 2) {
         swap(temp.at(0).at(1), temp.at(0).at(2));
     }
     else if (index == 4) {
@@ -417,7 +406,7 @@ vector<vector<int>> PuzzleSolver::swapRight(int index, SquareTile* curr) {
     else if (index == 8) {
         swap(temp.at(2).at(1), temp.at(2).at(2));
     }
-    return temp;
+    //return temp;
 }
 
 /* when we make each child in each expansion we need to check the following:
@@ -427,6 +416,7 @@ vector<vector<int>> PuzzleSolver::swapRight(int index, SquareTile* curr) {
  * If it is a no to all of the questions then we continue making children and asking the questions.
  */
 void PuzzleSolver::makeChildren1(SquareTile* curr, vector<vector<int>> vec) {
+
     // temp SquareTile
     SquareTile* temp = new SquareTile;
 
@@ -435,7 +425,7 @@ void PuzzleSolver::makeChildren1(SquareTile* curr, vector<vector<int>> vec) {
         return;
     }
     // if goal is not reached check if state is a repeat and if child is the goal
-    if (isRepeatState(vec)) {
+    if (isNotRepeatState(vec)) {
         // calculate heuristic and movement cost
         temp->eightPuzzle = vec;
         temp->heuristicVal = heuristicVal(vec);
@@ -451,7 +441,7 @@ void PuzzleSolver::makeChildren1(SquareTile* curr, vector<vector<int>> vec) {
 
         // calculate total nodes and max nodes in priority_queue
         totalNodes += 1;
-        if (maxNodes <= que.size()) {
+        if (maxNodes < que.size()) {
             maxNodes = que.size();
         }
 
@@ -462,7 +452,6 @@ void PuzzleSolver::makeChildren1(SquareTile* curr, vector<vector<int>> vec) {
             // exit once we found the goal
             return;
         }
-
     }
     else { // repeat so we "delete" child
         curr->childNode1 = NULL;
@@ -471,6 +460,7 @@ void PuzzleSolver::makeChildren1(SquareTile* curr, vector<vector<int>> vec) {
 
 void PuzzleSolver::makeChildren2(SquareTile* curr, vector<vector<int>> vec) {
     // temp SquareTile
+
     SquareTile* temp = new SquareTile;
 
     // if goal state has already been found then we do nothing
@@ -478,7 +468,7 @@ void PuzzleSolver::makeChildren2(SquareTile* curr, vector<vector<int>> vec) {
         return;
     }
     // if goal is not reached check if state is a repeat and if child is the goal
-    if (isRepeatState(vec)) {
+    if (isNotRepeatState(vec)) {
         // calculate heuristic and movement cost
         temp->eightPuzzle = vec;
         temp->heuristicVal = heuristicVal(vec);
@@ -494,7 +484,7 @@ void PuzzleSolver::makeChildren2(SquareTile* curr, vector<vector<int>> vec) {
 
         // calculate total nodes and max nodes in priority_queue
         totalNodes += 1;
-        if (maxNodes <= que.size()) {
+        if (maxNodes < que.size()) {
             maxNodes = que.size();
         }
 
@@ -514,6 +504,7 @@ void PuzzleSolver::makeChildren2(SquareTile* curr, vector<vector<int>> vec) {
 
 void PuzzleSolver::makeChildren3(SquareTile* curr, vector<vector<int>> vec) {
     // temp SquareTile
+
     SquareTile* temp = new SquareTile;
 
     // if goal state has already been found then we do nothing
@@ -521,7 +512,7 @@ void PuzzleSolver::makeChildren3(SquareTile* curr, vector<vector<int>> vec) {
         return;
     }
     // if goal is not reached check if state is a repeat and if child is the goal
-    if (isRepeatState(vec)) {
+    if (isNotRepeatState(vec)) {
         // calculate heuristic and movement cost
         temp->eightPuzzle = vec;
         temp->heuristicVal = heuristicVal(vec);
@@ -537,7 +528,7 @@ void PuzzleSolver::makeChildren3(SquareTile* curr, vector<vector<int>> vec) {
 
         // calculate total nodes and max nodes in priority_queue
         totalNodes += 1;
-        if (maxNodes <= que.size()) {
+        if (maxNodes < que.size()) {
             maxNodes = que.size();
         }
 
@@ -557,6 +548,7 @@ void PuzzleSolver::makeChildren3(SquareTile* curr, vector<vector<int>> vec) {
 
 void PuzzleSolver::makeChildren4(SquareTile* curr, vector<vector<int>> vec) {
     // temp SquareTile
+
     SquareTile* temp = new SquareTile;
 
     // if goal state has already been found then we do nothing
@@ -564,7 +556,7 @@ void PuzzleSolver::makeChildren4(SquareTile* curr, vector<vector<int>> vec) {
         return;
     }
     // if goal is not reached check if state is a repeat and if child is the goal
-    if (isRepeatState(vec)) {
+    if (isNotRepeatState(vec)) {
         // calculate heuristic and movement cost
         temp->eightPuzzle = vec;
         temp->heuristicVal = heuristicVal(vec);
@@ -580,7 +572,7 @@ void PuzzleSolver::makeChildren4(SquareTile* curr, vector<vector<int>> vec) {
 
         // calculate total nodes and max nodes in priority_queue
         totalNodes += 1;
-        if (maxNodes <= que.size()) {
+        if (maxNodes < que.size()) {
             maxNodes = que.size();
         }
 
@@ -598,6 +590,7 @@ void PuzzleSolver::makeChildren4(SquareTile* curr, vector<vector<int>> vec) {
     }
 }
 
+
 // checks if a puzzle is the goal puzzle
 bool PuzzleSolver::checkGoal(vector<vector<int>> eightPuzzle) {
     vector<vector<int>> goalTemp = makeGoal();
@@ -613,7 +606,7 @@ bool PuzzleSolver::checkGoal(vector<vector<int>> eightPuzzle) {
 }
 
 // checks if this state has already been traversed through
-bool PuzzleSolver::isRepeatState(vector<vector<int>> eightPuzzle) {
+bool PuzzleSolver::isNotRepeatState(vector<vector<int>> eightPuzzle) {
     for (int i = 0; i < repeatStates.size(); i++) {
         if (repeatStates.at(i) == eightPuzzle) {
             return false;
@@ -651,17 +644,17 @@ vector<vector<int>> PuzzleSolver::makeGoal() {
 // prints the current puzzle and its heuristic and movement cost
 // The statements for the values was adapted from the assignment sheet
 void PuzzleSolver::printPuzzle(SquareTile* curr) {
+    if (curr != root) { // root does not have heuristic or movement cost
+        cout << "This was the best state to expand. This state had g(n) = ";
+        cout << curr->movementCost << endl;
+        cout << " and h(n) = ";
+        cout << curr->heuristicVal << endl;
+    }
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
             cout << curr->eightPuzzle.at(i).at(j) << " ";
         }
         cout << endl << endl;
-    }
-    if (curr != root) { // root does not have heuristic or movement cost
-        cout << "This was the best state to expand. This state had h(n) = ";
-        cout << curr->heuristicVal;
-        cout << " and g(n) = ";
-        cout << curr->movementCost << endl;
     }
 }
 
@@ -671,7 +664,6 @@ void PuzzleSolver::printTest(SquareTile* curr, string a) {
     cout << endl << endl;
 }
 
-// Missing Space = Index 0 => 2 Possible moves (right, down)
 void PuzzleSolver::IndexZero(SquareTile* curr)
 {
     vector< vector<int>> t1 = curr->eightPuzzle;
@@ -683,7 +675,6 @@ void PuzzleSolver::IndexZero(SquareTile* curr)
     swapDown(1, t2);
     makeChildren2(curr, t2);
 }
-// Missing Space = Index 1 => 3 Possible moves (left, right, down)
 void PuzzleSolver::IndexOne(SquareTile* curr)
 {
     vector< vector<int>> t1 = curr->eightPuzzle;
@@ -699,7 +690,6 @@ void PuzzleSolver::IndexOne(SquareTile* curr)
     swapDown(2, t3);
     makeChildren3(curr, t3);
 }
-// Missing Space = Index 2 => 2 Possible moves (left, down)
 void PuzzleSolver::IndexTwo(SquareTile* curr)
 {
     vector< vector<int>> t1 = curr->eightPuzzle;
@@ -711,7 +701,7 @@ void PuzzleSolver::IndexTwo(SquareTile* curr)
     swapDown(3, t2);
     makeChildren2(curr, t2);
 }
-// Missing Space = Index 3 => 3 Possible moves (up, right, down)
+
 void PuzzleSolver::IndexThree(SquareTile* curr)
 {
     vector< vector<int>> t1 = curr->eightPuzzle;
@@ -727,7 +717,7 @@ void PuzzleSolver::IndexThree(SquareTile* curr)
     swapDown(4, t3);
     makeChildren3(curr, t3);
 }
-// Missing Space = Index 4 => 4 Possible moves (left, right, down, up)
+
 void PuzzleSolver::IndexFour(SquareTile* curr)
 {
     vector<vector<int>> t1 = curr->eightPuzzle;
@@ -747,7 +737,7 @@ void PuzzleSolver::IndexFour(SquareTile* curr)
     swapUp(5, t4);
     makeChildren4(curr, t4);
 }
-// Missing Space = Index 5 => 3 Possible moves (left, up, down)
+
 void PuzzleSolver::IndexFive(SquareTile* curr)
 {
     vector< vector<int>> t1 = curr->eightPuzzle;
@@ -763,7 +753,6 @@ void PuzzleSolver::IndexFive(SquareTile* curr)
     swapDown(6, t3);
     makeChildren3(curr, t3);
 }
-// Missing Space = Index 6 => 2 Possible moves (up, right)
 void PuzzleSolver::IndexSix(SquareTile* curr)
 {
     vector< vector<int>> t1 = curr->eightPuzzle;
@@ -775,7 +764,6 @@ void PuzzleSolver::IndexSix(SquareTile* curr)
     swapRight(7, t2);
     makeChildren2(curr, t2);
 }
-// Missing Space = Index 7 => 3 Possible moves (left, right, up)
 void PuzzleSolver::IndexSeven(SquareTile* curr)
 {
     vector< vector<int>> t1 = curr->eightPuzzle;
@@ -791,7 +779,7 @@ void PuzzleSolver::IndexSeven(SquareTile* curr)
     swapUp(8, t3);
     makeChildren3(curr, t3);
 }
-// Missing Space = Index 8 => 2 Possible moves (left, ups)
+
 void PuzzleSolver::IndexEight(SquareTile* curr)
 {
     vector< vector<int>> t1 = curr->eightPuzzle;

@@ -14,9 +14,11 @@
 #include <queue>
 #include <cmath>
 #include <string>
+#include <cstdlib>
 
 using namespace std;
 
+// struct to represent each node (state)
 struct SquareTile {
     // Each tile (1 parent) has 4 possible moves => 4 children
     SquareTile* parentNode;
@@ -30,6 +32,19 @@ struct SquareTile {
     int movementCost;
     // vector of int vectors that includes a puzzle states
     vector<vector<int>> eightPuzzle;
+};
+
+// This struct allows for the priority queue to reorder its elements depending on the values of h and g for each.
+// f = g + h
+// The best option in each expansion is the one with the lowest f
+// Credit: http://www.cplusplus.com/forum/general/115634/
+struct ReOrderElements {
+    bool operator () (SquareTile* t1, SquareTile* t2) {
+        if ((t1->movementCost + t1->heuristicVal) > (t2->movementCost + t2->heuristicVal)) { //f = g + h
+           return true;
+        }
+        return false;
+    }
 };
 
 class PuzzleSolver {
@@ -48,8 +63,8 @@ class PuzzleSolver {
         bool isGoal;
         // This is a vector of the states already traversed states to avoid repeats
         vector<vector<vector<int>>> repeatStates;
-        // priority queue to hold our states
-        priority_queue<SquareTile*> que;
+        // priority queue to hold our states (parents and their children)
+        priority_queue<SquareTile*, vector<SquareTile*>, ReOrderElements> que;
 
     public:
         // class constructor
@@ -74,46 +89,42 @@ class PuzzleSolver {
         void swapLeft (int, vector<vector<int>>&);
         // move right
         void swapRight(int, vector<vector<int>>&);
-        // create children nodes during each Expansion
+        // create children nodes during each Expansion => 4 possible children for each parent state
         void makeChildren1(SquareTile*, vector<vector<int>>);
         void makeChildren2(SquareTile*, vector<vector<int>>);
         void makeChildren3(SquareTile*, vector<vector<int>>);
         void makeChildren4(SquareTile*, vector<vector<int>>);
         // function to check if a state is a repeat
         bool isNotRepeatState(vector<vector<int>>);
-        // function to check if a state is the goalTemp
+        // function to check if a state is the goal state
         bool checkGoal(vector<vector<int>>);
-        // function will display the puzzle in a grid format
+        // function will display the puzzle in a grid format with heuristic and movement cost values
         void printPuzzle(SquareTile*);
         // function that runs search algorithms
         void runAlgorithm(int a);
-        // print function to test and fiind seg fault
+        // print function to test and find errors in code
         void printTest(SquareTile*, string);
         // function to make move if the missing is in index zero of 3x3 grid
         void IndexZero(SquareTile*);
-        // function to make move if the missing is in index one of 3x3 grid
+        // function to make move if the missing is in index zero of 3x3 grid
         void IndexOne(SquareTile*);
-        // function to make move if the missing is in index two of 3x3 grid
+        // function to make move if the missing is in index zero of 3x3 grid
         void IndexTwo(SquareTile*);
-        // function to make move if the missing is in index three of 3x3 grid
+        // function to make move if the missing is in index zero of 3x3 grid
         void IndexThree(SquareTile*);
-        // function to make move if the missing is in index four of 3x3 grid
+        // function to make move if the missing is in index zero of 3x3 grid
         void IndexFour(SquareTile*);
-        // function to make move if the missing is in index five of 3x3 grid
+        // function to make move if the missing is in index zero of 3x3 grid
         void IndexFive(SquareTile*);
-        // function to make move if the missing is in index six of 3x3 grid
+        // function to make move if the missing is in index zero of 3x3 grid
         void IndexSix(SquareTile*);
-        // function to make move if the missing is in index seven of 3x3 grid
+        // function to make move if the missing is in index zero of 3x3 grid
         void IndexSeven(SquareTile*);
-        // function to make move if the missing is in index eight of 3x3 grid
+        // function to make move if the missing is in index zero of 3x3 grid
         void IndexEight(SquareTile*);
-
-
-
-
-
-
-
+        // function to make move if the missing is in index zero of 3x3 grid
+        void IndexNine(SquareTile*);
+        // function to make move if the missing is in index zero of 3x3 grid
 
         /* More Functions to come => Still need the following
             * Use the selected algorithm -------> Done
@@ -121,20 +132,13 @@ class PuzzleSolver {
             * Expansion of Node for children -------> Done
             * Make the puzzle tree root to allow for decision tree and its Expansion -------> Done
             * Calculation of number of nodes (max in queue and total) -------> Done
+            * Expand the best state with lowest h(n) and g(n) values -------> Done
             * Repeat comparison -------> Done
             * Goal comparison -------> Done
             * Current state display -------> Done
             * Valid puzzle check (when user enters custom puzzle) -------> Done
             * etc. (may need more but this is it for now)
          */
-
-         /**********************************************
-
-         Need to figure out how to reorder the priority queue so that the best move
-         from each expansion will be selected and not all possible nodes.
-
-         ************************************************/
-
 };
 
 #endif /* puzzleSolver_hpp */
