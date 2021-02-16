@@ -211,7 +211,6 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
 
     for(int i = 0; i < 3; i++) {
         for(int j = 0; j < 3; j++) {
-            cout << "Value: " << curr->eightPuzzle.at(i).at(j) << endl;
             if(curr->eightPuzzle.at(i).at(j) == 0)
             {
                 found = true;
@@ -220,7 +219,6 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
 
             else
             {
-                cout << "IndexInside: " << index << endl;
                 index++;
             }
         }
