@@ -37,7 +37,8 @@ struct SquareTile {
 // This struct allows for the priority queue to reorder its elements depending on the values of h and g for each.
 // f = g + h
 // The best option in each expansion is the one with the lowest f
-// Credit: http://www.cplusplus.com/forum/general/115634/
+// Credit (Source 1): http://www.cplusplus.com/forum/general/115634/
+// Credit (Source 2):  https://www.geeksforgeeks.org/stl-priority-queue-for-structure-or-class/
 struct ReOrderElements {
     bool operator () (SquareTile* t1, SquareTile* t2) {
         if ((t1->movementCost + t1->heuristicVal) > (t2->movementCost + t2->heuristicVal)) { //f = g + h
