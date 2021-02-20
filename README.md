@@ -2,7 +2,7 @@
 
 # Project Information
 * CS 170: Introduction to AI, UCR
-* Winter 2020
+* Winter 2021
 * Creator
   * Mayur Ryali
 
