@@ -31,7 +31,7 @@ struct SquareTile {
     // movement cost for each expansion
     int movementCost;
     // vector of int vectors that includes a puzzle states
-    vector<vector<int>> eightPuzzle;
+    vector<vector<int> > eightPuzzle;
 };
 
 // This struct allows for the priority queue to reorder its elements depending on the values of h and g for each.
@@ -63,7 +63,7 @@ class PuzzleSolver {
         // Used to check if the current state is the goal states
         bool isGoal;
         // This is a vector of the states already traversed states to avoid repeats
-        vector<vector<vector<int>>> repeatStates;
+        vector<vector<vector<int> > > repeatStates;
         // priority queue to hold our states (parents and their children)
         priority_queue<SquareTile*, vector<SquareTile*>, ReOrderElements> que;
 
@@ -71,34 +71,34 @@ class PuzzleSolver {
         // class constructor
         PuzzleSolver();
         // calculate the heuristic value depending on selected algorithm
-        int heuristicVal(vector<vector<int>>);
+        int heuristicVal(vector<vector<int> >);
         // make root node and set up intial puzzle
         void makeTreeRoot(int);
         // function to make a default puzzle
-        vector<vector<int>> makeDefaultPuzzle();
+        vector<vector<int> > makeDefaultPuzzle();
         // function to make a custom puzzle
-        vector<vector<int>> makeCustomPuzzle();
+        vector<vector<int> > makeCustomPuzzle();
         // function to make a goal puzzleType
-        vector<vector<int>> makeGoal();
+        vector<vector<int> > makeGoal();
         // function of possible moves
         void boardMoves(SquareTile*);
         // move down
-        void swapDown (int, vector<vector<int>>&);
+        void swapDown (int, vector<vector<int> >&);
         // move up
-        void swapUp (int, vector<vector<int>>&);
+        void swapUp (int, vector<vector<int> >&);
         // move left
-        void swapLeft (int, vector<vector<int>>&);
+        void swapLeft (int, vector<vector<int> >&);
         // move right
-        void swapRight(int, vector<vector<int>>&);
+        void swapRight(int, vector<vector<int> >&);
         // create children nodes during each Expansion => 4 possible children for each parent state
-        void makeChildren1(SquareTile*, vector<vector<int>>);
-        void makeChildren2(SquareTile*, vector<vector<int>>);
-        void makeChildren3(SquareTile*, vector<vector<int>>);
-        void makeChildren4(SquareTile*, vector<vector<int>>);
+        void makeChildren1(SquareTile*, vector<vector<int> >);
+        void makeChildren2(SquareTile*, vector<vector<int> >);
+        void makeChildren3(SquareTile*, vector<vector<int> >);
+        void makeChildren4(SquareTile*, vector<vector<int> >);
         // function to check if a state is a repeat
-        bool isNotRepeatState(vector<vector<int>>);
+        bool isNotRepeatState(vector<vector<int> >);
         // function to check if a state is the goal state
-        bool checkGoal(vector<vector<int>>);
+        bool checkGoal(vector<vector<int> >);
         // function will display the puzzle in a grid format with heuristic and movement cost values
         void printPuzzle(SquareTile*);
         // function that runs search algorithms

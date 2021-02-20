@@ -40,6 +40,7 @@ void PuzzleSolver::makeTreeRoot (int a) {
         // store the puzzle to compare for repeats later
         repeatStates.push_back(root->eightPuzzle);
         // print root
+        cout << "Your Puzzle: " << endl;
         printPuzzle(root);
     }
     else if (a == 2) { // User chose to use custom 8 puzzle
@@ -49,7 +50,9 @@ void PuzzleSolver::makeTreeRoot (int a) {
         que.push(root);
         // store the puzzle to compare for repeats later
         repeatStates.push_back(root->eightPuzzle);
-        //printPuzzle(root);
+        // print root
+        cout << "Your Puzzle: " << endl;
+        printPuzzle(root);
     }
     else { // invalid choice
         cout << "Invalid entry. Program Exited." << endl;
@@ -73,7 +76,7 @@ void PuzzleSolver::runAlgorithm(int a) {
 
         cout << "State Exapnding: " << endl;
 
-        if (a == 1 || a == 2 || a == 3) {
+        if (a == 1 || a == 2 || a == 3) { // find the solution starting from the root
             boardMoves(root);
         }
         else {
@@ -88,10 +91,10 @@ void PuzzleSolver::runAlgorithm(int a) {
 }
 
 // Credit: Val Calculation algorithm: https://www.geeksforgeeks.org/a-search-algorithm/
-int PuzzleSolver::heuristicVal (vector<vector<int>> vec) {
+int PuzzleSolver::heuristicVal (vector<vector<int> > vec) {
     int tempHeuristicVal = 0;
 
-    vector<vector<int>> goalPuzzle = makeGoal();
+    vector<vector<int> > goalPuzzle = makeGoal();
 
     // Uniform Cost Search (BFS) = A* search where heuristic is zero (from assignment page)
     if (algorithmNum == 1) {
@@ -130,8 +133,8 @@ int PuzzleSolver::heuristicVal (vector<vector<int>> vec) {
     return tempHeuristicVal;
 }
 
-vector<vector<int>> PuzzleSolver::makeDefaultPuzzle() {
-    vector<vector<int>> defaultPuzzle;
+vector<vector<int> > PuzzleSolver::makeDefaultPuzzle() {
+    vector<vector<int> > defaultPuzzle;
 
     // vectors for each row of the 2D puzzle
     vector<int> v1, v2, v3;
@@ -156,13 +159,13 @@ vector<vector<int>> PuzzleSolver::makeDefaultPuzzle() {
     return defaultPuzzle;
 }
 
-vector<vector<int>> PuzzleSolver::makeCustomPuzzle() {
+vector<vector<int> > PuzzleSolver::makeCustomPuzzle() {
     // contain user's input for rows
     int a, b, c;
     // vectors for each row of the 2D puzzle
     vector<int> v1, v2, v3;
     // vector for custom puzzleType
-    vector<vector<int>> customPuzzle;
+    vector<vector<int> > customPuzzle;
 
     cout << "Please enter row 1 of your puzzle using space in between numbers 1-8 and 0 for missing space: " << endl;
     cin >> a >> b >> c;
@@ -310,8 +313,8 @@ void PuzzleSolver::boardMoves(SquareTile* curr) {
 
 // we have four possible moves for the puzzle => down, up, left, swapRight
 // Credit: swap function for vector: https://www.geeksforgeeks.org/difference-between-stdswap-and-stdvectorswap/
-void PuzzleSolver::swapDown(int index, vector<vector<int>>& temp) {
-    //vector<vector<int>> temp = vec;
+void PuzzleSolver::swapDown(int index, vector<vector<int> >& temp) {
+    //vector<vector<int> > temp = vec;
 
     if (index == 1) {
         swap(temp.at(0).at(0), temp.at(1).at(0));
@@ -335,8 +338,8 @@ void PuzzleSolver::swapDown(int index, vector<vector<int>>& temp) {
 }
 
 
-void PuzzleSolver::swapUp(int index, vector<vector<int>>& temp) {
-    //vector<vector<int>> temp = vec;
+void PuzzleSolver::swapUp(int index, vector<vector<int> >& temp) {
+    //vector<vector<int> > temp = vec;
 
     if (index == 4) {
         swap(temp.at(1).at(0), temp.at(0).at(0));
@@ -359,8 +362,8 @@ void PuzzleSolver::swapUp(int index, vector<vector<int>>& temp) {
     //return temp;
 }
 
-void PuzzleSolver::swapLeft(int index, vector<vector<int>>& temp) {
-    //vector<vector<int>> temp = vec;
+void PuzzleSolver::swapLeft(int index, vector<vector<int> >& temp) {
+    //vector<vector<int> > temp = vec;
 
     if (index == 2) {
         swap(temp.at(0).at(1), temp.at(0).at(0));
@@ -383,8 +386,8 @@ void PuzzleSolver::swapLeft(int index, vector<vector<int>>& temp) {
     //return temp;
 }
 
-void PuzzleSolver::swapRight(int index, vector<vector<int>>& temp) {
-    //vector<vector<int>> temp = vec;
+void PuzzleSolver::swapRight(int index, vector<vector<int> >& temp) {
+    //vector<vector<int> > temp = vec;
 
     if (index == 1) {
         swap(temp.at(0).at(0), temp.at(0).at(1));
@@ -413,7 +416,7 @@ void PuzzleSolver::swapRight(int index, vector<vector<int>>& temp) {
  * is the child a duplicate?
  * If it is a no to all of the questions then we continue making children and asking the questions.
  */
-void PuzzleSolver::makeChildren1(SquareTile* curr, vector<vector<int>> vec) {
+void PuzzleSolver::makeChildren1(SquareTile* curr, vector<vector<int> > vec) {
 
     // temp SquareTile
     SquareTile* temp = new SquareTile;
@@ -456,7 +459,7 @@ void PuzzleSolver::makeChildren1(SquareTile* curr, vector<vector<int>> vec) {
     }
 }
 
-void PuzzleSolver::makeChildren2(SquareTile* curr, vector<vector<int>> vec) {
+void PuzzleSolver::makeChildren2(SquareTile* curr, vector<vector<int> > vec) {
     // temp SquareTile
 
     SquareTile* temp = new SquareTile;
@@ -500,7 +503,7 @@ void PuzzleSolver::makeChildren2(SquareTile* curr, vector<vector<int>> vec) {
     }
 }
 
-void PuzzleSolver::makeChildren3(SquareTile* curr, vector<vector<int>> vec) {
+void PuzzleSolver::makeChildren3(SquareTile* curr, vector<vector<int> > vec) {
     // temp SquareTile
 
     SquareTile* temp = new SquareTile;
@@ -544,7 +547,7 @@ void PuzzleSolver::makeChildren3(SquareTile* curr, vector<vector<int>> vec) {
     }
 }
 
-void PuzzleSolver::makeChildren4(SquareTile* curr, vector<vector<int>> vec) {
+void PuzzleSolver::makeChildren4(SquareTile* curr, vector<vector<int> > vec) {
     // temp SquareTile
 
     SquareTile* temp = new SquareTile;
@@ -590,8 +593,8 @@ void PuzzleSolver::makeChildren4(SquareTile* curr, vector<vector<int>> vec) {
 
 
 // checks if a puzzle is the goal puzzle
-bool PuzzleSolver::checkGoal(vector<vector<int>> eightPuzzle) {
-    vector<vector<int>> goalTemp = makeGoal();
+bool PuzzleSolver::checkGoal(vector<vector<int> > eightPuzzle) {
+    vector<vector<int> > goalTemp = makeGoal();
 
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
@@ -604,7 +607,7 @@ bool PuzzleSolver::checkGoal(vector<vector<int>> eightPuzzle) {
 }
 
 // checks if this state has already been traversed through
-bool PuzzleSolver::isNotRepeatState(vector<vector<int>> eightPuzzle) {
+bool PuzzleSolver::isNotRepeatState(vector<vector<int> > eightPuzzle) {
     for (int i = 0; i < repeatStates.size(); i++) {
         if (repeatStates.at(i) == eightPuzzle) {
             return false;
@@ -613,8 +616,8 @@ bool PuzzleSolver::isNotRepeatState(vector<vector<int>> eightPuzzle) {
     return true;
 }
 
-vector<vector<int>> PuzzleSolver::makeGoal() {
-    vector<vector<int>> goalPuzzle;
+vector<vector<int> > PuzzleSolver::makeGoal() {
+    vector<vector<int> > goalPuzzle;
 
     // vectors for each row of the 2D puzzle
     vector<int> v1, v2, v3;
@@ -664,8 +667,8 @@ void PuzzleSolver::printTest(SquareTile* curr, string a) {
 
 void PuzzleSolver::IndexZero(SquareTile* curr)
 {
-    vector< vector<int>> t1 = curr->eightPuzzle;
-    vector< vector<int>> t2 = curr->eightPuzzle;
+    vector< vector<int> > t1 = curr->eightPuzzle;
+    vector< vector<int> > t2 = curr->eightPuzzle;
 
     swapRight(1, t1);
     makeChildren1(curr, t1);
@@ -675,9 +678,9 @@ void PuzzleSolver::IndexZero(SquareTile* curr)
 }
 void PuzzleSolver::IndexOne(SquareTile* curr)
 {
-    vector< vector<int>> t1 = curr->eightPuzzle;
-    vector< vector<int>> t2 = curr->eightPuzzle;
-    vector< vector<int>> t3 = curr->eightPuzzle;
+    vector< vector<int> > t1 = curr->eightPuzzle;
+    vector< vector<int> > t2 = curr->eightPuzzle;
+    vector< vector<int> > t3 = curr->eightPuzzle;
 
     swapLeft(2, t1);
     makeChildren1(curr, t1);
@@ -690,8 +693,8 @@ void PuzzleSolver::IndexOne(SquareTile* curr)
 }
 void PuzzleSolver::IndexTwo(SquareTile* curr)
 {
-    vector< vector<int>> t1 = curr->eightPuzzle;
-    vector< vector<int>> t2 = curr->eightPuzzle;
+    vector< vector<int> > t1 = curr->eightPuzzle;
+    vector< vector<int> > t2 = curr->eightPuzzle;
 
     swapLeft(3, t1);
     makeChildren1(curr, t1);
@@ -702,9 +705,9 @@ void PuzzleSolver::IndexTwo(SquareTile* curr)
 
 void PuzzleSolver::IndexThree(SquareTile* curr)
 {
-    vector< vector<int>> t1 = curr->eightPuzzle;
-    vector< vector<int>> t2 = curr->eightPuzzle;
-    vector< vector<int>> t3 = curr->eightPuzzle;
+    vector< vector<int> > t1 = curr->eightPuzzle;
+    vector< vector<int> > t2 = curr->eightPuzzle;
+    vector< vector<int> > t3 = curr->eightPuzzle;
 
     swapUp(4, t1);
     makeChildren1(curr, t1);
@@ -718,10 +721,10 @@ void PuzzleSolver::IndexThree(SquareTile* curr)
 
 void PuzzleSolver::IndexFour(SquareTile* curr)
 {
-    vector<vector<int>> t1 = curr->eightPuzzle;
-    vector<vector<int>> t2 = curr->eightPuzzle;
-    vector<vector<int>> t3 = curr->eightPuzzle;
-    vector<vector<int>> t4 = curr->eightPuzzle;
+    vector<vector<int> > t1 = curr->eightPuzzle;
+    vector<vector<int> > t2 = curr->eightPuzzle;
+    vector<vector<int> > t3 = curr->eightPuzzle;
+    vector<vector<int> > t4 = curr->eightPuzzle;
 
     swapLeft(5, t1);
     makeChildren1(curr, t1);
@@ -738,9 +741,9 @@ void PuzzleSolver::IndexFour(SquareTile* curr)
 
 void PuzzleSolver::IndexFive(SquareTile* curr)
 {
-    vector< vector<int>> t1 = curr->eightPuzzle;
-    vector< vector<int>> t2 = curr->eightPuzzle;
-    vector< vector<int>> t3 = curr->eightPuzzle;
+    vector< vector<int> > t1 = curr->eightPuzzle;
+    vector< vector<int> > t2 = curr->eightPuzzle;
+    vector< vector<int> > t3 = curr->eightPuzzle;
 
     swapLeft(6, t1);
     makeChildren1(curr, t1);
@@ -753,8 +756,8 @@ void PuzzleSolver::IndexFive(SquareTile* curr)
 }
 void PuzzleSolver::IndexSix(SquareTile* curr)
 {
-    vector< vector<int>> t1 = curr->eightPuzzle;
-    vector< vector<int>> t2 = curr->eightPuzzle;
+    vector< vector<int> > t1 = curr->eightPuzzle;
+    vector< vector<int> > t2 = curr->eightPuzzle;
 
     swapUp(7, t1);
     makeChildren1(curr, t1);
@@ -764,9 +767,9 @@ void PuzzleSolver::IndexSix(SquareTile* curr)
 }
 void PuzzleSolver::IndexSeven(SquareTile* curr)
 {
-    vector< vector<int>> t1 = curr->eightPuzzle;
-    vector< vector<int>> t2 = curr->eightPuzzle;
-    vector< vector<int>> t3 = curr->eightPuzzle;
+    vector< vector<int> > t1 = curr->eightPuzzle;
+    vector< vector<int> > t2 = curr->eightPuzzle;
+    vector< vector<int> > t3 = curr->eightPuzzle;
 
     swapLeft(8, t1);
     makeChildren1(curr, t1);
@@ -780,8 +783,8 @@ void PuzzleSolver::IndexSeven(SquareTile* curr)
 
 void PuzzleSolver::IndexEight(SquareTile* curr)
 {
-    vector< vector<int>> t1 = curr->eightPuzzle;
-    vector< vector<int>> t2 = curr->eightPuzzle;
+    vector< vector<int> > t1 = curr->eightPuzzle;
+    vector< vector<int> > t2 = curr->eightPuzzle;
 
     swapLeft(9, t1);
     makeChildren1(curr, t1);
