@@ -107,25 +107,22 @@ class PuzzleSolver {
         void printTest(SquareTile*, string);
         // function to make move if the missing is in index zero of 3x3 grid
         void IndexZero(SquareTile*);
-        // function to make move if the missing is in index zero of 3x3 grid
+        // function to make move if the missing is in index one of 3x3 grid
         void IndexOne(SquareTile*);
-        // function to make move if the missing is in index zero of 3x3 grid
+        // function to make move if the missing is in index two of 3x3 grid
         void IndexTwo(SquareTile*);
-        // function to make move if the missing is in index zero of 3x3 grid
+        // function to make move if the missing is in index three of 3x3 grid
         void IndexThree(SquareTile*);
-        // function to make move if the missing is in index zero of 3x3 grid
+        // function to make move if the missing is in index four of 3x3 grid
         void IndexFour(SquareTile*);
-        // function to make move if the missing is in index zero of 3x3 grid
+        // function to make move if the missing is in index five of 3x3 grid
         void IndexFive(SquareTile*);
-        // function to make move if the missing is in index zero of 3x3 grid
+        // function to make move if the missing is in index six of 3x3 grid
         void IndexSix(SquareTile*);
-        // function to make move if the missing is in index zero of 3x3 grid
+        // function to make move if the missing is in index seven of 3x3 grid
         void IndexSeven(SquareTile*);
-        // function to make move if the missing is in index zero of 3x3 grid
+        // function to make move if the missing is in index eight of 3x3 grid
         void IndexEight(SquareTile*);
-        // function to make move if the missing is in index zero of 3x3 grid
-        void IndexNine(SquareTile*);
-        // function to make move if the missing is in index zero of 3x3 grid
 
         /* More Functions to come => Still need the following
             * Use the selected algorithm -------> Done

@@ -664,7 +664,7 @@ void PuzzleSolver::printTest(SquareTile* curr, string a) {
     printPuzzle(curr);
     cout << endl << endl;
 }
-
+// function to make move if the missing is in index zero of 3x3 grid
 void PuzzleSolver::IndexZero(SquareTile* curr)
 {
     vector< vector<int> > t1 = curr->eightPuzzle;
@@ -676,6 +676,7 @@ void PuzzleSolver::IndexZero(SquareTile* curr)
     swapDown(1, t2);
     makeChildren2(curr, t2);
 }
+// function to make move if the missing is in index one of 3x3 grid
 void PuzzleSolver::IndexOne(SquareTile* curr)
 {
     vector< vector<int> > t1 = curr->eightPuzzle;
@@ -691,6 +692,7 @@ void PuzzleSolver::IndexOne(SquareTile* curr)
     swapDown(2, t3);
     makeChildren3(curr, t3);
 }
+// function to make move if the missing is in index two of 3x3 grid
 void PuzzleSolver::IndexTwo(SquareTile* curr)
 {
     vector< vector<int> > t1 = curr->eightPuzzle;
@@ -702,7 +704,7 @@ void PuzzleSolver::IndexTwo(SquareTile* curr)
     swapDown(3, t2);
     makeChildren2(curr, t2);
 }
-
+// function to make move if the missing is in index three of 3x3 grid
 void PuzzleSolver::IndexThree(SquareTile* curr)
 {
     vector< vector<int> > t1 = curr->eightPuzzle;
@@ -718,7 +720,7 @@ void PuzzleSolver::IndexThree(SquareTile* curr)
     swapDown(4, t3);
     makeChildren3(curr, t3);
 }
-
+// function to make move if the missing is in index four of 3x3 grid
 void PuzzleSolver::IndexFour(SquareTile* curr)
 {
     vector<vector<int> > t1 = curr->eightPuzzle;
@@ -738,7 +740,7 @@ void PuzzleSolver::IndexFour(SquareTile* curr)
     swapUp(5, t4);
     makeChildren4(curr, t4);
 }
-
+// function to make move if the missing is in index five of 3x3 grid
 void PuzzleSolver::IndexFive(SquareTile* curr)
 {
     vector< vector<int> > t1 = curr->eightPuzzle;
@@ -754,6 +756,7 @@ void PuzzleSolver::IndexFive(SquareTile* curr)
     swapDown(6, t3);
     makeChildren3(curr, t3);
 }
+// function to make move if the missing is in index six of 3x3 grid
 void PuzzleSolver::IndexSix(SquareTile* curr)
 {
     vector< vector<int> > t1 = curr->eightPuzzle;
@@ -765,6 +768,7 @@ void PuzzleSolver::IndexSix(SquareTile* curr)
     swapRight(7, t2);
     makeChildren2(curr, t2);
 }
+// function to make move if the missing is in index seven of 3x3 grid
 void PuzzleSolver::IndexSeven(SquareTile* curr)
 {
     vector< vector<int> > t1 = curr->eightPuzzle;
@@ -780,7 +784,7 @@ void PuzzleSolver::IndexSeven(SquareTile* curr)
     swapUp(8, t3);
     makeChildren3(curr, t3);
 }
-
+// function to make move if the missing is in index eight of 3x3 grid
 void PuzzleSolver::IndexEight(SquareTile* curr)
 {
     vector< vector<int> > t1 = curr->eightPuzzle;
