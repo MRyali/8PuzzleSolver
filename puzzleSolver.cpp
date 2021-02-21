@@ -4,8 +4,11 @@
 //
 //  Created by Mayur Ryali on 2/8/21.
 //
+//
 
 #include "PuzzleSolver.hpp"
+
+using namespace std;
 
 // class construcotr initializes root to NULL
 PuzzleSolver::PuzzleSolver() {
